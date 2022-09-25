@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { getSettlementPrice } from "../pages/api/settlementPrice";
 
 const ApiTest = () => {
@@ -6,14 +7,22 @@ const ApiTest = () => {
   const pageNo = "1";
   const saleDate = "20220924";
   const whsalCd = "250003";
-  const res = getSettlementPrice({
-    serviceKey,
-    apiType,
-    pageNo,
-    saleDate,
-    whsalCd,
-  });
-  console.log(res);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const resData = async () => {
+      const data = await getSettlementPrice({
+        serviceKey,
+        apiType,
+        pageNo,
+        saleDate,
+        whsalCd,
+      });
+      setData(data);
+    };
+    resData();
+  }, []);
+
+  console.log("data", data);
   return <div>API Test Result</div>;
 };
 

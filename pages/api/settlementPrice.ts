@@ -27,6 +27,7 @@ export const getSettlementPrice = async (query: SettlementPirceProps) => {
         smallCd: query.smallCd,
       },
     });
+    console.log(res.data);
     if (res.status === 200) return res.data;
   } catch (error) {
     console.log("error", error);
