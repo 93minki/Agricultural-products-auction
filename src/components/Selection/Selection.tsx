@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import {
   Button,
@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import * as S from "./style";
+import { Stack } from "@mui/system";
 
 const searchWord = [
   { label: "꽈리고추" },
@@ -27,8 +28,15 @@ const Selection = () => {
     console.log("e", e);
   };
 
+  const getCurrentDate = () => {
+    console.log("fff");
+    const currentDate = new Date();
+    console.log(currentDate);
+  };
+  getCurrentDate();
   return (
     <S.SelectionLayout>
+      <Stack component="form" noValidate spacing={3}></Stack>
       <S.SelectionItem>
         <InputLabel>도매시장</InputLabel>
         <Select
