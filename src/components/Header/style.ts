@@ -14,6 +14,6 @@ export const HeaderTitle = styled.div`
 `;
 
 export const HeaderToggleButtonGroup = styled(ToggleButtonGroup)`
-  align-self: flex-end;
+  align-self: center;
   margin-right: 1rem;
 `;

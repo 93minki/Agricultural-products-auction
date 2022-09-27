@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import type { MouseEvent } from "react";
+import { useState } from "react";
+import type { MouseEvent, ChangeEvent } from "react";
+import { wholeMarketList } from "../../utils/wholemarketList";
 import {
-  Button,
   InputLabel,
   MenuItem,
   Select,
@@ -9,34 +9,60 @@ import {
   TextField,
 } from "@mui/material";
 import * as S from "./style";
-import { Stack } from "@mui/system";
-
-const searchWord = [
-  { label: "꽈리고추" },
-  { label: "옥수수" },
-  { label: "블랙커런트" },
-];
+import { getSettlementPrice } from "../../../pages/api/settlementPrice";
+import { getDataProps } from "../../Types/SettlementPriceType";
 
 const Selection = () => {
   const [currentMarket, setCurrentMarket] = useState("");
+  const [searchWord, setSearchWord] = useState("");
+  const [searchDate, setSearchDate] = useState("");
 
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value as string);
   };
 
-  const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log("e", e);
+  const handleSearchWordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.currentTarget.value);
   };
 
-  const getCurrentDate = () => {
-    console.log("fff");
-    const currentDate = new Date();
-    console.log(currentDate);
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const date = e.currentTarget.value.replaceAll("-", "");
+    setSearchDate(date);
   };
-  getCurrentDate();
+
+  const getPrice = async () => {
+    const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
+    const apiType = "json";
+    const pageNo = "1";
+    const saleDate = searchDate;
+    const whsalCd = currentMarket;
+
+    const getData: getDataProps[] = await getSettlementPrice({
+      serviceKey,
+      apiType,
+      pageNo,
+      saleDate,
+      whsalCd,
+    });
+    console.log("getData!!", getData);
+
+    // await getSettlementPrice();
+  };
+
+  const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    getPrice();
+  };
+
   return (
     <S.SelectionLayout>
-      <Stack component="form" noValidate spacing={3}></Stack>
+      <TextField
+        id="date"
+        label="날짜"
+        type="date"
+        defaultValue={searchDate}
+        InputLabelProps={{ shrink: true }}
+        onChange={handleDateChange}
+      />
       <S.SelectionItem>
         <InputLabel>도매시장</InputLabel>
         <Select
@@ -44,13 +70,21 @@ const Selection = () => {
           label="소매시장"
           onChange={handleMarketChange}
         >
-          <MenuItem value="대전노은">대전노은</MenuItem>
-          <MenuItem value="서울시장">서울시장</MenuItem>
-          <MenuItem value="횡성시장">횡성시장</MenuItem>
+          {wholeMarketList.map((market) => (
+            <MenuItem key={market.code} value={market.code}>
+              {market.name}
+            </MenuItem>
+          ))}
         </Select>
       </S.SelectionItem>
 
-      <S.SearchWord id="outlined-basic" label="상품명"></S.SearchWord>
+      <S.SearchWord
+        id="outlined-basic"
+        label="상품명"
+        onChange={handleSearchWordChange}
+      >
+        {searchWord}
+      </S.SearchWord>
       <S.SearchButton variant="contained" onClick={handleSearchButtonClick}>
         검색
       </S.SearchButton>
