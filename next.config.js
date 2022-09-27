@@ -5,8 +5,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/agromarket",
-        destination: `${process.env.NEXT_PUBLIC_API_END_POINT}`,
+        source: "/agromarket-settle",
+        destination: `${process.env.NEXT_PUBLIC_API_SETTLEMENT_PRICE}`,
+      },
+      {
+        source: "/agromarket-realtime",
+        destination: `${process.env.NEXT_PUBLIC_API_REALTIME_PRICE}`,
       },
     ];
   },
