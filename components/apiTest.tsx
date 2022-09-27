@@ -22,7 +22,7 @@ const ApiTest = () => {
       setData(recvData);
     };
     resData();
-  }, []);
+  }, [serviceKey]);
 
   console.log("data", data);
   return (
