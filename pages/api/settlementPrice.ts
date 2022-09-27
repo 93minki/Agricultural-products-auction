@@ -1,16 +1,5 @@
 import axios from "axios";
-
-interface SettlementPirceProps {
-  serviceKey: string;
-  apiType: string;
-  pageNo: string;
-  saleDate: string;
-  whsalCd: string;
-  cmpCd?: string;
-  largeCd?: string;
-  midCd?: string;
-  smallCd?: string;
-}
+import { SettlementPirceProps } from "../../Types/SettlementPriceType";
 
 export const getSettlementPrice = async (query: SettlementPirceProps) => {
   try {
@@ -27,8 +16,7 @@ export const getSettlementPrice = async (query: SettlementPirceProps) => {
         smallCd: query.smallCd,
       },
     });
-    console.log(res.data);
-    if (res.status === 200) return res.data;
+    if (res.status === 200) return res.data.data;
   } catch (error) {
     console.log("error", error);
     return error;
