@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRealTimePirce } from "../pages/api/realTimePrice";
+import { getRealTimePirce } from "../../pages/api/realTimePrice";
 import { getDataProps } from "../Types/RealTimePriceType";
 
 export const RealTimePrice = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSettlementPrice } from "../pages/api/settlementPrice";
+import { getSettlementPrice } from "../../pages/api/settlementPrice";
 import { getDataProps } from "../Types/SettlementPriceType";
 
 const ApiTest = () => {

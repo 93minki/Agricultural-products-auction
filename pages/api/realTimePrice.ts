@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RealTimePriceProps } from "../../Types/RealTimePriceType";
+import { RealTimePriceProps } from "../../src/Types/RealTimePriceType";
 
 export const getRealTimePirce = async (query: RealTimePriceProps) => {
   try {
