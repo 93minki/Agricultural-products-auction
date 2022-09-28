@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { SettlementPirceProps } from "../../src/Types/SettlementPriceType";
 
 export const getSettlementPrice = async (query: SettlementPirceProps) => {

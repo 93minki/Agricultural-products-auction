@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { MouseEvent, ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import {
@@ -22,9 +22,10 @@ const Selection = () => {
 
     return year + "-" + month.padStart(2, "0") + "-" + date;
   }, []);
+
   const [currentMarket, setCurrentMarket] = useState("");
   const [searchWord, setSearchWord] = useState("");
-  const [searchDate, setSearchDate] = useState(getCurrentDate());
+  const [searchDate, setSearchDate] = useState(getCurrentDate);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value as string);
@@ -46,17 +47,28 @@ const Selection = () => {
     const saleDate = searchDate;
     const whsalCd = currentMarket;
 
-    const getData: getDataProps[] = await getSettlementPrice({
-      serviceKey,
-      apiType,
-      pageNo,
-      saleDate,
-      whsalCd,
-    });
-    console.log("getData!!", getData);
+    try {
+      const getData: getDataProps[] = await getSettlementPrice({
+        serviceKey,
+        apiType,
+        pageNo,
+        saleDate,
+        whsalCd,
+      });
+      console.log("getData!!", getData, typeof getData);
+      if (getData) {
+        const target = getData.filter((data) =>
+          data.smallName.includes(searchWord)
+        );
+        console.log("filtered target", target);
+      }
+    } catch (error) {
+      console.log("selection error", error);
+    }
   };
 
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log("click");
     getPrice();
   };
 
