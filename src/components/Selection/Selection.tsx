@@ -10,14 +10,21 @@ import {
 } from "@mui/material";
 import * as S from "./style";
 import { getSettlementPrice } from "../../../pages/api/settlementPrice";
-import { getDataProps } from "../../Types/SettlementPriceType";
+import { SettlementDataProps } from "../../Types/SettlementPriceType";
+import { RealTimeDataProps } from "../../Types/RealTimePriceType";
+import { getRealTimePirce } from "../../../pages/api/realTimePrice";
 
 interface SelectionProps {
-  getCurrentProps: (props: getDataProps[]) => void;
+  getSettlementDatas: (props: SettlementDataProps[]) => void;
+  getRealTimeDatas: (props: RealTimeDataProps[]) => void;
   currentTab: string;
 }
 
-const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
+const Selection = ({
+  getSettlementDatas,
+  getRealTimeDatas,
+  currentTab,
+}: SelectionProps) => {
   console.log("currentTab", currentTab);
   const getCurrentDate = useCallback(() => {
     const today = new Date();
@@ -45,7 +52,32 @@ const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
     setSearchDate(date);
   };
 
-  const getPrice = async () => {
+  const realTimePrice = async () => {
+    const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
+    const apiType = "json";
+    const pageNo = "1";
+    const whsalCd = currentMarket;
+
+    try {
+      const getData: RealTimeDataProps[] = await getRealTimePirce({
+        serviceKey,
+        apiType,
+        pageNo,
+        whsalCd,
+      });
+
+      if (getData) {
+        const target = getData.filter((data) =>
+          data.smallName.includes(searchWord)
+        );
+        getRealTimeDatas(target);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const settlementPrice = async () => {
     const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
     const apiType = "json";
     const pageNo = "1";
@@ -53,7 +85,7 @@ const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
     const whsalCd = currentMarket;
 
     try {
-      const getData: getDataProps[] = await getSettlementPrice({
+      const getData: SettlementDataProps[] = await getSettlementPrice({
         serviceKey,
         apiType,
         pageNo,
@@ -66,7 +98,7 @@ const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
           data.smallName.includes(searchWord)
         );
         console.log("filtered target", target);
-        getCurrentProps(target);
+        getSettlementDatas(target);
       }
     } catch (error) {
       console.log("selection error", error);
@@ -74,8 +106,15 @@ const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
   };
 
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log("click");
-    getPrice();
+    if (currentTab === "정산 가격 정보") {
+      if (searchDate && currentMarket && searchWord) {
+        settlementPrice();
+      }
+    } else {
+      if (currentMarket && searchWord) {
+        realTimePrice();
+      }
+    }
   };
 
   return (

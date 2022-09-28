@@ -9,7 +9,7 @@ export interface RealTimePriceProps {
   smallCd?: string;
 }
 
-export interface getDataProps {
+export interface RealTimeDataProps {
   cmpCd: string;
   cmpName: string;
   cost: number;

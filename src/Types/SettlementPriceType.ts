@@ -10,7 +10,7 @@ export interface SettlementPirceProps {
   smallCd?: string;
 }
 
-export interface getDataProps {
+export interface SettlementDataProps {
   avgAmt: number;
   cmpCd: string;
   cmpName: string;

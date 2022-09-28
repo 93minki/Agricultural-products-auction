@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { getRealTimePirce } from "../../pages/api/realTimePrice";
-import { getDataProps } from "../Types/RealTimePriceType";
+import { RealTimeDataProps } from "../Types/RealTimePriceType";
 
 export const RealTimePrice = () => {
   const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
   const apiType = "json";
   const pageNo = "1";
   const whsalCd = "250003";
-  const [data, setData] = useState<getDataProps[]>([]);
+  const [data, setData] = useState<RealTimeDataProps[]>([]);
 
   useEffect(() => {
     const resData = async () => {
-      const recvData: getDataProps[] = await getRealTimePirce({
+      const recvData: RealTimeDataProps[] = await getRealTimePirce({
         serviceKey,
         apiType,
         pageNo,

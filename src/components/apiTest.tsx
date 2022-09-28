@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSettlementPrice } from "../../pages/api/settlementPrice";
-import { getDataProps } from "../Types/SettlementPriceType";
+import { SettlementDataProps } from "../Types/SettlementPriceType";
 
 const ApiTest = () => {
   const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
@@ -8,10 +8,10 @@ const ApiTest = () => {
   const pageNo = "1";
   const saleDate = "20220926";
   const whsalCd = "250003";
-  const [data, setData] = useState<getDataProps[]>([]);
+  const [data, setData] = useState<SettlementDataProps[]>([]);
   useEffect(() => {
     const resData = async () => {
-      const recvData: getDataProps[] = await getSettlementPrice({
+      const recvData: SettlementDataProps[] = await getSettlementPrice({
         serviceKey,
         apiType,
         pageNo,
