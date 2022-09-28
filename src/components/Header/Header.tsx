@@ -6,9 +6,10 @@ import * as S from "./style";
 // TODO: Header에서는 현재 어떤 페이지 인지, 다른 페이지로 이동할 수 있는 탭을 제공
 interface HeaderProps {
   currentPage: string;
+  getCurrentTab: (tab: string) => void;
 }
 
-const Header = ({ currentPage }: HeaderProps) => {
+const Header = ({ currentPage, getCurrentTab }: HeaderProps) => {
   const [currentTitle, setCurrentTitle] = useState("");
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const Header = ({ currentPage }: HeaderProps) => {
 
   const handleTitleChange = (e: MouseEvent<HTMLElement>, nextTitle: string) => {
     setCurrentTitle(nextTitle);
+    getCurrentTab(nextTitle);
   };
   return (
     <S.HeaderLayout>

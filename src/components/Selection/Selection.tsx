@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type { MouseEvent, ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import {
@@ -12,15 +12,20 @@ import * as S from "./style";
 import { getSettlementPrice } from "../../../pages/api/settlementPrice";
 import { getDataProps } from "../../Types/SettlementPriceType";
 
-const Selection = () => {
+interface SelectionProps {
+  getCurrentProps: (props: getDataProps[]) => void;
+  currentTab: string;
+}
+
+const Selection = ({ getCurrentProps, currentTab }: SelectionProps) => {
+  console.log("currentTab", currentTab);
   const getCurrentDate = useCallback(() => {
-    console.log("get Current Date");
     const today = new Date();
     const year = today.getFullYear().toString();
     const month = (today.getMonth() + 1).toString();
     const date = today.getDate().toString();
 
-    return year + "-" + month.padStart(2, "0") + "-" + date;
+    return year + "-" + month.padStart(2, "0") + "-" + date.padStart(2, "0");
   }, []);
 
   const [currentMarket, setCurrentMarket] = useState("");
@@ -61,6 +66,7 @@ const Selection = () => {
           data.smallName.includes(searchWord)
         );
         console.log("filtered target", target);
+        getCurrentProps(target);
       }
     } catch (error) {
       console.log("selection error", error);
@@ -74,14 +80,19 @@ const Selection = () => {
 
   return (
     <S.SelectionLayout>
-      <TextField
-        id="date"
-        label="날짜"
-        type="date"
-        defaultValue={searchDate}
-        InputLabelProps={{ shrink: true }}
-        onChange={handleDateChange}
-      />
+      {currentTab === "정산 가격 정보" ? (
+        <TextField
+          id="date"
+          label="날짜"
+          type="date"
+          defaultValue={searchDate}
+          InputLabelProps={{ shrink: true }}
+          onChange={handleDateChange}
+        />
+      ) : (
+        ""
+      )}
+
       <S.SelectionItem>
         <InputLabel>도매시장</InputLabel>
         <Select

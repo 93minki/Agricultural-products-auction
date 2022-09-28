@@ -2,7 +2,7 @@ html,
 body {
   margin: 0 auto;
   max-width: 40rem;
-  height: 100vh;
+  height: auto;
   border-right: 1px solid #e6e6e6;
   border-left: 1px solid #e6e6e6;
   box-shadow: 0 0 0.5rem #f2f2f2;
