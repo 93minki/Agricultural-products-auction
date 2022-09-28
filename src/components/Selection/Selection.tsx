@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { MouseEvent, ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import {
@@ -13,9 +13,18 @@ import { getSettlementPrice } from "../../../pages/api/settlementPrice";
 import { getDataProps } from "../../Types/SettlementPriceType";
 
 const Selection = () => {
+  const getCurrentDate = useCallback(() => {
+    console.log("get Current Date");
+    const today = new Date();
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString();
+    const date = today.getDate().toString();
+
+    return year + "-" + month.padStart(2, "0") + "-" + date;
+  }, []);
   const [currentMarket, setCurrentMarket] = useState("");
   const [searchWord, setSearchWord] = useState("");
-  const [searchDate, setSearchDate] = useState("");
+  const [searchDate, setSearchDate] = useState(getCurrentDate());
 
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value as string);
@@ -45,8 +54,6 @@ const Selection = () => {
       whsalCd,
     });
     console.log("getData!!", getData);
-
-    // await getSettlementPrice();
   };
 
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
