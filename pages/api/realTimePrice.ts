@@ -1,12 +1,15 @@
 import axios from "axios";
-import { RealTimePriceProps } from "../../src/Types/RealTimePriceType";
+import { RealTimePriceRequest } from "../../src/Types/RealTimePriceType";
 
-export const getRealTimePirce = async (query: RealTimePriceProps) => {
+const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
+const apiType = "json";
+
+export const getRealTimePirce = async (query: RealTimePriceRequest) => {
   try {
     const res = await axios.get("/agromarket-realtime", {
       params: {
-        serviceKey: query.serviceKey,
-        apiType: query.apiType,
+        serviceKey,
+        apiType,
         pageNo: query.pageNo,
         whsalCd: query.whsalCd,
         cmpCd: query.cmpCd,
@@ -15,6 +18,7 @@ export const getRealTimePirce = async (query: RealTimePriceProps) => {
         smallCd: query.smallCd,
       },
     });
+    
     if (res.status === 200) return res.data.data;
   } catch (error) {
     console.log("error", error);

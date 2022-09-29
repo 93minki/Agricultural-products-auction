@@ -9,16 +9,16 @@ import {
   TextField,
 } from "@mui/material";
 import * as S from "./style";
-import { SettlementDataProps } from "../../Types/SettlementPriceType";
-import { RealTimeDataProps } from "../../Types/RealTimePriceType";
+import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
+import { RealTimeReceiveAllData } from "../../Types/RealTimePriceType";
 
 interface SearchObj {
-  date?: string;
+  date: string;
   market: string;
   product: string;
 }
 interface SelectionProps {
-  searchButtonClick: (searchObj: SearchObj) => void;
+  searchButtonClick: ({ date, market, product }: SearchObj) => void;
   currentTab: string;
 }
 
@@ -63,6 +63,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
     } else {
       if (currentMarket && searchWord) {
         searchButtonClick({
+          date: searchDate.replaceAll("-", ""),
           market: currentMarket,
           product: searchWord,
         });

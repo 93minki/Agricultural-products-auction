@@ -1,6 +1,9 @@
-export interface RealTimePriceProps {
-  serviceKey: string;
-  apiType: string;
+export interface RealTimeSearchProps {
+  market: string;
+  product: string;
+}
+
+export interface RealTimePriceRequest {
   pageNo: string;
   whsalCd: string;
   cmpCd?: string;
@@ -9,21 +12,23 @@ export interface RealTimePriceProps {
   smallCd?: string;
 }
 
-export interface RealTimeDataProps {
+export interface RealTimeReceiveAllData {
+  saleDate: string;
+  whsalCd: string;
+  whsalName: string;
   cmpCd: string;
   cmpName: string;
-  cost: number;
   large: string;
   largeName: string;
   mid: string;
   midName: string;
-  qty: number;
-  rn: number;
-  saleDate: string;
-  sbidtime: string;
   small: string;
   smallName: string;
+  sanCd: string;
+  sanName: string;
+  cost: number;
+  qty: number;
   std: string;
-  whsalCd: string;
-  whsalName: string;
+  sbidtime: string;
+  rn: number;
 }

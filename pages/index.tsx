@@ -1,89 +1,104 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import Header from "../src/components/Header/Header";
-import ProductList from "../src/components/ProductList/ProductList";
+import SettlementProductList from "../src/components/SettlementProductList/SettlementProductList";
 import Selection from "../src/components/Selection/Selection";
-import { SettlementDataProps } from "../src/Types/SettlementPriceType";
-import { RealTimeDataProps } from "../src/Types/RealTimePriceType";
-
-interface SearchProps {
-  date?: string;
-  market: string;
-  product: string;
-}
+import {
+  SettlementSearchProps,
+  SettlementReceiveAllData,
+} from "../src/Types/SettlementPriceType";
+import {
+  RealTimeReceiveAllData,
+  RealTimeSearchProps,
+} from "../src/Types/RealTimePriceType";
+import { getSettlementPrice } from "./api/settlementPrice";
+import { getRealTimePirce } from "./api/realTimePrice";
+import RealTimeProductList from "../src/components/RealTimeProductList/RealTimeProductList";
 
 const Home: NextPage = () => {
-  const [currentList, setCurrentList] = useState<SettlementDataProps[]>([]);
-  const [realTimeData, setRealTimeData] = useState<RealTimeDataProps[]>([]);
+  const [settlementProductList, setSettlementProductList] = useState<
+    SettlementReceiveAllData[]
+  >([]);
+  const [realtimeProductList, setRealTimeProductList] = useState<
+    RealTimeReceiveAllData[]
+  >([]);
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
-  const getSettlementDatas = (listItem: SettlementDataProps[]) => {
-    setCurrentList(listItem);
+  const getSettlementDatas = (listItem: SettlementReceiveAllData[]) => {
+    setSettlementProductList(listItem);
   };
 
-  const getRealTimeDatas = (listItem: RealTimeDataProps[]) => {
-    setRealTimeData(listItem);
+  const getRealTimeDatas = (listItem: RealTimeReceiveAllData[]) => {
+    setRealTimeProductList(listItem);
   };
 
   const getCurrentTab = (header: string) => {
+    if (header === "정산 가격 정보") {
+      setSettlementProductList([]);
+    } else {
+      setRealTimeProductList([]);
+    }
     setCurrentTab(header);
   };
 
-  const searchButtonClick = ({ date, market, product }: SearchProps) => {
+  const searchButtonClick = ({
+    date,
+    market,
+    product,
+  }: SettlementSearchProps) => {
     console.log("date", date, "market", market, "product", product);
+    if (currentTab === "정산 가격 정보") {
+      settlementPrice({ date, market, product });
+    } else {
+      realTimePrice({ market, product });
+    }
   };
 
-  // const realTimePrice = async () => {
-  //   const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
-  //   const apiType = "json";
-  //   const pageNo = "1";
-  //   const whsalCd = currentMarket;
+  const realTimePrice = async ({ market, product }: RealTimeSearchProps) => {
+    const pageNo = "1";
+    const whsalCd = market;
 
-  //   try {
-  //     const getData: RealTimeDataProps[] = await getRealTimePirce({
-  //       serviceKey,
-  //       apiType,
-  //       pageNo,
-  //       whsalCd,
-  //     });
+    try {
+      const getData: RealTimeReceiveAllData[] = await getRealTimePirce({
+        pageNo,
+        whsalCd,
+      });
 
-  //     if (getData) {
-  //       const target = getData.filter((data) =>
-  //         data.smallName.includes(searchWord)
-  //       );
-  //       getRealTimeDatas(target);
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
+      if (getData) {
+        const target = getData.filter((data) =>
+          data.smallName.includes(product)
+        );
+        getRealTimeDatas(target);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
-  // const settlementPrice = async () => {
-  //   const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
-  //   const apiType = "json";
-  //   const pageNo = "1";
-  //   const saleDate = searchDate;
-  //   const whsalCd = currentMarket;
+  const settlementPrice = async ({
+    date,
+    market,
+    product,
+  }: SettlementSearchProps) => {
+    const pageNo = "1";
+    const saleDate = date;
+    const whsalCd = market;
 
-  //   try {
-  //     const getData: SettlementDataProps[] = await getSettlementPrice({
-  //       serviceKey,
-  //       apiType,
-  //       pageNo,
-  //       saleDate,
-  //       whsalCd,
-  //     });
-  //     console.log("getData!!", getData, typeof getData);
-  //     if (getData) {
-  //       const target = getData.filter((data) =>
-  //         data.smallName.includes(searchWord)
-  //       );
-  //       console.log("filtered target", target);
-  //       getSettlementDatas(target);
-  //     }
-  //   } catch (error) {
-  //     console.log("selection error", error);
-  //   }
-  // };
+    try {
+      const getData: SettlementReceiveAllData[] = await getSettlementPrice({
+        pageNo,
+        saleDate,
+        whsalCd,
+      });
+      if (getData) {
+        const target = getData.filter((data) =>
+          data.smallName.includes(product)
+        );
+        getSettlementDatas(target);
+      }
+    } catch (error) {
+      console.log("selection error", error);
+    }
+  };
 
   return (
     <div>
@@ -92,7 +107,11 @@ const Home: NextPage = () => {
         currentTab={currentTab}
         searchButtonClick={searchButtonClick}
       />
-      <ProductList products={currentList} />
+      {currentTab === "정산 가격 정보" ? (
+        <SettlementProductList products={settlementProductList} />
+      ) : (
+        <RealTimeProductList products={realtimeProductList} />
+      )}
     </div>
   );
 };

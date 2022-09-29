@@ -1,10 +1,10 @@
-import { SettlementRecvData } from "../../Types/SettlementRecvDataType";
+import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
 import * as S from "./style";
 interface ProductProps {
-  props: SettlementRecvData;
+  props: SettlementReceiveAllData;
 }
 
-const Product = ({ props }: ProductProps) => {
+const SettlementProduct = ({ props }: ProductProps) => {
   const changeDate = (date: string) => {
     return (
       date.substring(0, 4) +
@@ -37,4 +37,4 @@ const Product = ({ props }: ProductProps) => {
   );
 };
 
-export default Product;
+export default SettlementProduct;

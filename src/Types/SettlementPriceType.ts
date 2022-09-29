@@ -1,6 +1,9 @@
-export interface SettlementPirceProps {
-  serviceKey: string;
-  apiType: string;
+export interface SettlementSearchProps {
+  date: string;
+  market: string;
+  product: string;
+}
+export interface SettlementPirceRequest {
   pageNo: string;
   saleDate: string;
   whsalCd: string;
@@ -10,32 +13,36 @@ export interface SettlementPirceProps {
   smallCd?: string;
 }
 
-export interface SettlementDataProps {
-  avgAmt: number;
+export interface SettlementReceiveAllData extends SettlementReceiveDatas {
   cmpCd: string;
-  cmpName: string;
   danCd: string;
   danq: number;
   large: string;
   largeName: string;
-  lvCd: string;
-  lvName: string;
-  maxAmt: number;
   mid: string;
   midName: string;
-  minAmt: number;
+  lvCd: string;
   pojCd: string;
-  rn: number;
-  saleDate: string;
   sanCd: string;
-  sanName: string;
   sizeCd: string;
   sizeName: string;
   small: string;
-  smallName: string;
-  std: string;
-  totAmt: number;
-  totQty: number;
   whsalCd: string;
   whsalName: string;
+}
+
+export interface SettlementReceiveDatas {
+  rn: number;
+  saleDate: string;
+  cmpName: string;
+  sanName: string;
+  std: string;
+  smallName: string;
+  sizeName: string;
+  lvName: string;
+  totQty: number;
+  totAmt: number;
+  minAmt: number;
+  maxAmt: number;
+  avgAmt: number;
 }
