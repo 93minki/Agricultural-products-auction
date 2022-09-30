@@ -1,9 +1,9 @@
-import { RealTimeReceiveData } from "../../Types/RealTimePriceType";
+import { RealTimeReceiveDatas } from "../../Types/RealTimePriceType";
 import RealTimeProducts from "../RealTimeProducts/RealTimeProduct";
 import * as S from "./style";
 
 interface ProductListProps {
-  products: RealTimeReceiveData[];
+  products: RealTimeReceiveDatas[];
 }
 
 const RealTimeProductList = ({ products }: ProductListProps) => {

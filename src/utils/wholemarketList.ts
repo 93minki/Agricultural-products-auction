@@ -16,12 +16,3 @@ export const wholeMarketList = [
     code: "230001",
   },
 ];
-
-export const productNames = [
-  {
-    name: "꽈리고추",
-    largeCd: "06",
-    midCd: "12",
-    smallCd: "01",
-  },
-];

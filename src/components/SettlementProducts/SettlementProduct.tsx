@@ -1,7 +1,7 @@
-import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
+import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import * as S from "./style";
 interface ProductProps {
-  props: SettlementReceiveAllData;
+  props: SettlementReceiveDatas;
 }
 
 const SettlementProduct = ({ props }: ProductProps) => {

@@ -12,8 +12,19 @@ export interface SettlementPirceRequest {
   midCd?: string;
   smallCd?: string;
 }
-
-export interface SettlementReceiveAllData extends SettlementReceiveDatas {
+export interface SettlementReceiveDatas {
+  rn: number;
+  saleDate: string;
+  cmpName: string;
+  sanName: string;
+  std: string;
+  smallName: string;
+  lvName: string;
+  totQty: number;
+  totAmt: number;
+  minAmt: number;
+  maxAmt: number;
+  avgAmt: number;
   cmpCd: string;
   danCd: string;
   danq: number;
@@ -30,19 +41,13 @@ export interface SettlementReceiveAllData extends SettlementReceiveDatas {
   whsalCd: string;
   whsalName: string;
 }
-
-export interface SettlementReceiveDatas {
-  rn: number;
-  saleDate: string;
-  cmpName: string;
-  sanName: string;
-  std: string;
-  smallName: string;
-  sizeName: string;
-  lvName: string;
-  totQty: number;
-  totAmt: number;
-  minAmt: number;
-  maxAmt: number;
-  avgAmt: number;
+export interface SettlementReceiveAllData {
+  data: SettlementReceiveDatas[];
+  errorCode: string;
+  errorText: string;
+  status: string;
+  statusText: string;
+  pageNo: string;
+  dataCnt: number;
+  totCnt: number;
 }

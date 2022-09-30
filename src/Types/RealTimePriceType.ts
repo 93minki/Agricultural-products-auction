@@ -7,7 +7,7 @@ export interface RealTimePriceRequest {
   smallCd?: string;
 }
 
-export interface RealTimeReceiveData {
+export interface RealTimeReceiveDatas {
   saleDate: string;
   whsalCd: string;
   whsalName: string;
@@ -29,7 +29,7 @@ export interface RealTimeReceiveData {
 }
 
 export interface RealTimeReceiveAllData {
-  data: RealTimeReceiveData[];
+  data: RealTimeReceiveDatas[];
   errorCode: string;
   errorText: string;
   status: string;

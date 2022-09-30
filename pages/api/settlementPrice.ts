@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { SettlementPirceRequest } from "../../src/Types/SettlementPriceType";
 
 const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
-const apiType = 'json';
+const apiType = "json";
 
 export const getSettlementPrice = async (query: SettlementPirceRequest) => {
   try {
@@ -19,7 +19,7 @@ export const getSettlementPrice = async (query: SettlementPirceRequest) => {
         smallCd: query.smallCd,
       },
     });
-    if (res.status === 200) return res.data.data;
+    if (res.status === 200) return res.data;
   } catch (error) {
     console.log("error", error);
     return error;
