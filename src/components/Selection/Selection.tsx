@@ -9,23 +9,25 @@ import {
   TextField,
 } from "@mui/material";
 import * as S from "./style";
-import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
-import { RealTimeReceiveAllData } from "../../Types/RealTimePriceType";
 
 interface SearchObj {
   date: string;
   market: string;
+  company: string;
   product: string;
 }
 interface SelectionProps {
-  searchButtonClick: ({ date, market, product }: SearchObj) => void;
+  searchButtonClick: ({ date, market, company, product }: SearchObj) => void;
   currentTab: string;
 }
 
+interface CompanyListProps {
+  name: string;
+  cmpCd: string;
+}
+
 const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
-  console.log("currentTab", currentTab);
   const getCurrentDate = useCallback(() => {
-    console.log("getCurrentDate");
     const today = new Date();
     const year = today.getFullYear().toString();
     const month = (today.getMonth() + 1).toString();
@@ -35,11 +37,23 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   }, []);
 
   const [currentMarket, setCurrentMarket] = useState("");
+  const [currentCompany, setCurrentCompany] = useState("");
+  const [currentCompanyList, setCurrentCompanyList] = useState<
+    CompanyListProps[]
+  >([]);
   const [searchWord, setSearchWord] = useState("");
   const [searchDate, setSearchDate] = useState(getCurrentDate);
-  console.log("currentDate", searchDate);
+
   const handleMarketChange = (e: SelectChangeEvent) => {
-    setCurrentMarket(e.target.value as string);
+    setCurrentMarket(e.target.value);
+    const companyList = wholeMarketList.filter(
+      (market) => market.whsalCd === e.target.value
+    );
+    setCurrentCompanyList(companyList[0].cmpList);
+  };
+
+  const handleCompanyChange = (e: SelectChangeEvent) => {
+    setCurrentCompany(e.target.value);
   };
 
   const handleSearchWordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,16 +62,26 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
 
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const date = e.currentTarget.value;
-    console.log("e.target", e.currentTarget.value);
     setSearchDate(date);
   };
 
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log(
+      "searchDate",
+      searchDate,
+      "currentMarket",
+      currentMarket,
+      "currentCompany",
+      currentCompany,
+      "product",
+      searchWord
+    );
     if (currentTab === "정산 가격 정보") {
       if (searchDate && currentMarket && searchWord) {
         searchButtonClick({
           date: searchDate.replaceAll("-", ""),
           market: currentMarket,
+          company: currentCompany,
           product: searchWord,
         });
       }
@@ -66,6 +90,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
         searchButtonClick({
           date: searchDate.replaceAll("-", ""),
           market: currentMarket,
+          company: currentCompany,
           product: searchWord,
         });
       }
@@ -91,12 +116,26 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
         <InputLabel>도매시장</InputLabel>
         <Select
           value={currentMarket}
-          label="소매시장"
+          label="도매시장"
           onChange={handleMarketChange}
         >
           {wholeMarketList.map((market) => (
-            <MenuItem key={market.code} value={market.code}>
+            <MenuItem key={market.name} value={market.whsalCd}>
               {market.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </S.SelectionItem>
+      <S.SelectionItem>
+        <InputLabel>법인명</InputLabel>
+        <Select
+          value={currentCompany}
+          label="법인명"
+          onChange={handleCompanyChange}
+        >
+          {currentCompanyList.map((company) => (
+            <MenuItem key={company.cmpCd} value={company.cmpCd}>
+              {company.name}
             </MenuItem>
           ))}
         </Select>

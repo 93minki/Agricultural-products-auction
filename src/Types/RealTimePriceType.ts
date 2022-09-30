@@ -1,7 +1,7 @@
 export interface RealTimePriceRequest {
   pageNo: string;
   whsalCd: string;
-  cmpCd?: string;
+  cmpCd: string;
   largeCd?: string;
   midCd?: string;
   smallCd?: string;

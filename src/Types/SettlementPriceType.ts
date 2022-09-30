@@ -1,13 +1,14 @@
 export interface SettlementSearchProps {
   date?: string;
   market: string;
+  company: string;
   product: string;
 }
 export interface SettlementPirceRequest {
   pageNo: string;
   saleDate: string;
   whsalCd: string;
-  cmpCd?: string;
+  cmpCd: string;
   largeCd?: string;
   midCd?: string;
   smallCd?: string;

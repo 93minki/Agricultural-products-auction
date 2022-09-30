@@ -28,11 +28,12 @@ const Home: NextPage = () => {
   const [searchDataObject, setSearchDataObject] = useState({
     date: "",
     market: "",
+    company: "",
     product: "",
   });
 
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
-    setSettlementProductList(listItem);
+    setSettlementProductList((prev) => [...prev, ...listItem]);
   };
 
   const getRealTimeDatas = (listItem: RealTimeReceiveDatas[]) => {
@@ -52,10 +53,20 @@ const Home: NextPage = () => {
   const searchButtonClick = ({
     date,
     market,
+    company,
     product,
   }: SettlementSearchProps) => {
-    console.log("date", date, "market", market, "product", product);
-    setSearchDataObject({ date: date as string, market, product });
+    console.log(
+      "date",
+      date,
+      "market",
+      market,
+      "product",
+      product,
+      "company",
+      company
+    );
+    setSearchDataObject({ date: date as string, market, company, product });
     if (currentTab === "정산 가격 정보") {
       settlementPrice("1");
     } else {
@@ -68,6 +79,7 @@ const Home: NextPage = () => {
       const getData: RealTimeReceiveAllData = await getRealTimePirce({
         pageNo,
         whsalCd: searchDataObject.market,
+        cmpCd: searchDataObject.company,
       });
 
       const target = getData.data.filter((data) =>
@@ -101,6 +113,7 @@ const Home: NextPage = () => {
         pageNo,
         saleDate: searchDataObject.date,
         whsalCd: searchDataObject.market,
+        cmpCd: searchDataObject.company,
       });
       console.log("getData", getData, pageNo);
       const target = getData.data.filter((data) =>

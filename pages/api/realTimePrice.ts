@@ -5,6 +5,7 @@ const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
 const apiType = "json";
 
 export const getRealTimePirce = async (query: RealTimePriceRequest) => {
+  console.log(query);
   try {
     const res = await axios.get("/agromarket-realtime", {
       params: {
