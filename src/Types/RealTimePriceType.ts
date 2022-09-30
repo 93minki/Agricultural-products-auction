@@ -1,8 +1,3 @@
-export interface RealTimeSearchProps {
-  market: string;
-  product: string;
-}
-
 export interface RealTimePriceRequest {
   pageNo: string;
   whsalCd: string;
@@ -12,7 +7,7 @@ export interface RealTimePriceRequest {
   smallCd?: string;
 }
 
-export interface RealTimeReceiveAllData {
+export interface RealTimeReceiveData {
   saleDate: string;
   whsalCd: string;
   whsalName: string;
@@ -31,4 +26,15 @@ export interface RealTimeReceiveAllData {
   std: string;
   sbidtime: string;
   rn: number;
+}
+
+export interface RealTimeReceiveAllData {
+  data: RealTimeReceiveData[];
+  errorCode: string;
+  errorText: string;
+  status: string;
+  statusText: string;
+  pageNo: string;
+  dataCnt: number;
+  totCnt: number;
 }

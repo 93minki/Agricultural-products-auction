@@ -3,13 +3,13 @@ import { useState } from "react";
 import Header from "../src/components/Header/Header";
 import SettlementProductList from "../src/components/SettlementProductList/SettlementProductList";
 import Selection from "../src/components/Selection/Selection";
-import {
+import type {
   SettlementSearchProps,
   SettlementReceiveAllData,
 } from "../src/Types/SettlementPriceType";
-import {
+import type {
+  RealTimeReceiveData,
   RealTimeReceiveAllData,
-  RealTimeSearchProps,
 } from "../src/Types/RealTimePriceType";
 import { getSettlementPrice } from "./api/settlementPrice";
 import { getRealTimePirce } from "./api/realTimePrice";
@@ -20,15 +20,23 @@ const Home: NextPage = () => {
     SettlementReceiveAllData[]
   >([]);
   const [realtimeProductList, setRealTimeProductList] = useState<
-    RealTimeReceiveAllData[]
+    RealTimeReceiveData[]
   >([]);
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
+
+  const [searchDataObject, setSearchDataObject] = useState({
+    date: "",
+    market: "",
+    product: "",
+  });
+
   const getSettlementDatas = (listItem: SettlementReceiveAllData[]) => {
     setSettlementProductList(listItem);
   };
 
-  const getRealTimeDatas = (listItem: RealTimeReceiveAllData[]) => {
-    setRealTimeProductList(listItem);
+  const getRealTimeDatas = (listItem: RealTimeReceiveData[]) => {
+    console.log("listItem", listItem);
+    setRealTimeProductList((prev) => [...prev, ...listItem]);
   };
 
   const getCurrentTab = (header: string) => {
@@ -46,29 +54,43 @@ const Home: NextPage = () => {
     product,
   }: SettlementSearchProps) => {
     console.log("date", date, "market", market, "product", product);
+    setSearchDataObject({ date: date as string, market, product });
     if (currentTab === "정산 가격 정보") {
       settlementPrice({ date, market, product });
     } else {
-      realTimePrice({ market, product });
+      realTimePrice("1");
     }
   };
 
-  const realTimePrice = async ({ market, product }: RealTimeSearchProps) => {
-    const pageNo = "1";
-    const whsalCd = market;
-
+  const realTimePrice = async (pageNo: string) => {
+    console.log("searchObject", searchDataObject);
     try {
-      const getData: RealTimeReceiveAllData[] = await getRealTimePirce({
+      const getData: RealTimeReceiveAllData = await getRealTimePirce({
         pageNo,
-        whsalCd,
+        whsalCd: searchDataObject.market,
       });
+      console.log("origin", getData.data);
 
-      if (getData) {
-        const target = getData.filter((data) =>
-          data.smallName.includes(product)
-        );
-        getRealTimeDatas(target);
+      const target = getData.data.filter((data) => {
+        return data.smallName.includes(searchDataObject.product);
+      });
+      getRealTimeDatas(target);
+
+      if (pageNo === "1") {
+        const quotient = Math.floor(getData.totCnt / 1000);
+        if (quotient > 1) {
+          for (let i = 2; i <= quotient; i++) {
+            await realTimePrice(`${i}`);
+          }
+        }
       }
+
+      // if (getData.data) {
+      //   const target = getData.filter((data) =>
+      //     data.smallName.includes(product)
+      //   );
+      //   getRealTimeDatas(target);
+      // }
     } catch (error) {
       console.log("error", error);
     }
@@ -80,7 +102,7 @@ const Home: NextPage = () => {
     product,
   }: SettlementSearchProps) => {
     const pageNo = "1";
-    const saleDate = date;
+    const saleDate = date as string;
     const whsalCd = market;
 
     try {

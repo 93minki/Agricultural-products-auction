@@ -18,8 +18,9 @@ export const getRealTimePirce = async (query: RealTimePriceRequest) => {
         smallCd: query.smallCd,
       },
     });
-    
-    if (res.status === 200) return res.data.data;
+    console.log("res", res.data);
+
+    if (res.status === 200) return res.data;
   } catch (error) {
     console.log("error", error);
   }

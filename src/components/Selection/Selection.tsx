@@ -25,6 +25,7 @@ interface SelectionProps {
 const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   console.log("currentTab", currentTab);
   const getCurrentDate = useCallback(() => {
+    console.log("getCurrentDate");
     const today = new Date();
     const year = today.getFullYear().toString();
     const month = (today.getMonth() + 1).toString();
@@ -36,7 +37,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   const [currentMarket, setCurrentMarket] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const [searchDate, setSearchDate] = useState(getCurrentDate);
-
+  console.log("currentDate", searchDate);
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value as string);
   };
@@ -46,7 +47,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   };
 
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const date = e.currentTarget.value.replaceAll("-", "");
+    const date = e.currentTarget.value;
     console.log("e.target", e.currentTarget.value);
     setSearchDate(date);
   };

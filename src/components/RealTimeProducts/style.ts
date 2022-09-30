@@ -24,18 +24,10 @@ export const ProductTitle = styled.div`
 
 export const ProductContent = styled.div``;
 
-export const ProductTotal = styled.div``;
-
-export const ProductPrice = styled.div`
-  #min {
+export const ProductTotal = styled.div`
+  #total {
     color: blue;
   }
-
-  #max {
-    color: red;
-  }
-
-  #avg {
-    color: green;
-  }
 `;
+
+export const ProductPrice = styled.div``;

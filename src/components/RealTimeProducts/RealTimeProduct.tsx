@@ -1,8 +1,8 @@
-import { RealTimeReceiveAllData } from "../../Types/RealTimePriceType";
+import { RealTimeReceiveData } from "../../Types/RealTimePriceType";
 import * as S from "./style";
 
 interface ProductProps {
-  props: RealTimeReceiveAllData;
+  props: RealTimeReceiveData;
 }
 
 const RealTimeProducts = ({ props }: ProductProps) => {
@@ -12,6 +12,9 @@ const RealTimeProducts = ({ props }: ProductProps) => {
         {props.sanName ? props.sanName : "산지명이 없습니다."}
       </S.ProductTitle>
       <S.ProductContent>
+        <div>
+          <span>{props.smallName}</span>
+        </div>
         <div>
           경매시간:<span>{props.sbidtime}</span>
         </div>
