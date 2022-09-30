@@ -15,6 +15,7 @@ import type {
 import { getSettlementPrice } from "./api/settlementPrice";
 import { getRealTimePirce } from "./api/realTimePrice";
 import RealTimeProductList from "../src/components/RealTimeProductList/RealTimeProductList";
+import ScrollToTop from "../src/components/ScrollToTop/ScrollToTop";
 
 const Home: NextPage = () => {
   const [settlementProductList, setSettlementProductList] = useState<
@@ -95,13 +96,6 @@ const Home: NextPage = () => {
           }
         }
       }
-
-      // if (getData.data) {
-      //   const target = getData.filter((data) =>
-      //     data.smallName.includes(product)
-      //   );
-      //   getRealTimeDatas(target);
-      // }
     } catch (error) {
       console.log("error", error);
     }
@@ -132,16 +126,18 @@ const Home: NextPage = () => {
           }
         }
       }
-
-      // if (getData) {
-      //   const target = getData.filter((data) =>
-      //     data.smallName.includes(searchDataObject.product)
-      //   );
-      //   getSettlementDatas(target);
-      // }
     } catch (error) {
       console.log("selection error", error);
     }
+  };
+
+  const handleToTopButtonClick = () => {
+    if (!window.scrollY) return;
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -156,6 +152,7 @@ const Home: NextPage = () => {
       ) : (
         <RealTimeProductList products={realtimeProductList} />
       )}
+      <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />
     </div>
   );
 };
