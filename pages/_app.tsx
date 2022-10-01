@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>농산물 실시간/경락가격 정보</title>
       </Head>
-      <Component {...pageProps} />)
+      <Component {...pageProps} />
     </>
   );
 }
