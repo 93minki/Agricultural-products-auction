@@ -36,6 +36,8 @@ const Home: NextPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [message, setMessage] = useState("");
+
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     setSettlementProductList((prev) => [...prev, ...listItem]);
   };
@@ -51,6 +53,7 @@ const Home: NextPage = () => {
     } else {
       setRealTimeProductList([]);
     }
+    setMessage("");
     setCurrentTab(header);
   };
 
@@ -69,10 +72,12 @@ const Home: NextPage = () => {
     };
     if (currentTab === "정산 가격 정보") {
       setSettlementProductList([]);
+      setMessage("");
       setIsLoading(true);
       settlementPrice(searchDataObject);
     } else {
       setRealTimeProductList([]);
+      setMessage("");
       setIsLoading(true);
       realTimePrice(searchDataObject);
     }
@@ -92,6 +97,12 @@ const Home: NextPage = () => {
         whsalCd: market,
         cmpCd: company,
       });
+
+      if (getData.data.length === 0) {
+        setIsLoading(false);
+        setMessage("검색 결과가 없습니다!");
+        return;
+      }
       const target = getData.data.filter((data) =>
         data.smallName.includes(product)
       );
@@ -101,7 +112,6 @@ const Home: NextPage = () => {
       if (pageNo === "1") {
         if (quotient > 1) {
           for (let i = 2; i <= quotient; i++) {
-            console.log("second page start");
             await settlementPrice({
               pageNo: `${i}`,
               date,
@@ -114,7 +124,6 @@ const Home: NextPage = () => {
       }
 
       if (pageNo === quotient.toString()) {
-        // API 호출 종료!
         setIsLoading(false);
       }
     } catch (error) {
@@ -158,6 +167,9 @@ const Home: NextPage = () => {
 
       if (pageNo === quotient.toString()) {
         setIsLoading(false);
+        if (target.length === 0) {
+          setMessage("검색 결과가 없습니다!");
+        }
       }
     } catch (error) {
       console.log("error", error);
@@ -185,11 +197,13 @@ const Home: NextPage = () => {
         <SettlementProductList
           products={settlementProductList}
           isLoading={isLoading}
+          message={message}
         />
       ) : (
         <RealTimeProductList
           products={realtimeProductList}
           isLoading={isLoading}
+          message={message}
         />
       )}
       <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />

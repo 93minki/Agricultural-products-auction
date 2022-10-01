@@ -6,18 +6,24 @@ import * as S from "./style";
 interface ProductListProps {
   products: RealTimeReceiveDatas[];
   isLoading: boolean;
+  message: string;
 }
 
-const RealTimeProductList = ({ products, isLoading }: ProductListProps) => {
+const RealTimeProductList = ({
+  products,
+  isLoading,
+  message,
+}: ProductListProps) => {
   return (
     <S.ListLayout>
       {isLoading ? (
         <Loading />
-      ) : (
-        products &&
+      ) : products.length > 0 ? (
         products.map((product) => (
           <RealTimeProducts key={product.rn} props={product} />
         ))
+      ) : (
+        <S.NoSearchResult>{message}</S.NoSearchResult>
       )}
     </S.ListLayout>
   );

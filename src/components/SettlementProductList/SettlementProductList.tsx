@@ -7,22 +7,27 @@ import Loading from "../Loading/Loading";
 interface ProductListProps {
   products: SettlementReceiveDatas[];
   isLoading: boolean;
+  message: string;
 }
 
-const SettlementProductList = ({ products, isLoading }: ProductListProps) => {
+const SettlementProductList = ({
+  products,
+  isLoading,
+  message,
+}: ProductListProps) => {
   console.log("productList", products);
 
   return (
     <S.ListLayout>
-      <Loading />
-      {/* {isLoading ? (
+      {isLoading ? (
         <Loading />
-      ) : (
-        products &&
+      ) : products.length > 0 ? (
         products.map((product) => (
           <SettlementProduct key={product.rn} props={product} />
         ))
-      )} */}
+      ) : (
+        <S.NoSearchResult>{message}</S.NoSearchResult>
+      )}
     </S.ListLayout>
   );
 };
