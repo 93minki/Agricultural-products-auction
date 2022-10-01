@@ -3,20 +3,25 @@
 import * as S from "./style";
 import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import SettlementProduct from "../SettlementProducts/SettlementProduct";
-
+import Loading from "../Loading/Loading";
 interface ProductListProps {
   products: SettlementReceiveDatas[];
+  isLoading: boolean;
 }
 
-const SettlementProductList = ({ products }: ProductListProps) => {
+const SettlementProductList = ({ products, isLoading }: ProductListProps) => {
   console.log("productList", products);
 
   return (
     <S.ListLayout>
-      {products &&
+      {isLoading ? (
+        <Loading />
+      ) : (
+        products &&
         products.map((product) => (
           <SettlementProduct key={product.rn} props={product} />
-        ))}
+        ))
+      )}
     </S.ListLayout>
   );
 };

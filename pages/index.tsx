@@ -34,6 +34,8 @@ const Home: NextPage = () => {
   >([]);
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     setSettlementProductList((prev) => [...prev, ...listItem]);
   };
@@ -66,8 +68,12 @@ const Home: NextPage = () => {
       company,
     };
     if (currentTab === "정산 가격 정보") {
+      setSettlementProductList([]);
+      setIsLoading(true);
       settlementPrice(searchDataObject);
     } else {
+      setRealTimeProductList([]);
+      setIsLoading(true);
       realTimePrice(searchDataObject);
     }
   };
@@ -91,8 +97,8 @@ const Home: NextPage = () => {
       );
       getSettlementDatas(target);
 
+      const quotient = Math.ceil(getData.totCnt / 1000);
       if (pageNo === "1") {
-        const quotient = Math.ceil(getData.totCnt / 1000);
         if (quotient > 1) {
           for (let i = 2; i <= quotient; i++) {
             console.log("second page start");
@@ -105,6 +111,11 @@ const Home: NextPage = () => {
             });
           }
         }
+      }
+
+      if (pageNo === quotient.toString()) {
+        // API 호출 종료!
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("selection error", error);
@@ -130,8 +141,8 @@ const Home: NextPage = () => {
       );
       getRealTimeDatas(target);
 
+      const quotient = Math.ceil(getData.totCnt / 1000);
       if (pageNo === "1") {
-        const quotient = Math.ceil(getData.totCnt / 1000);
         if (quotient > 1) {
           for (let i = 2; i <= quotient; i++) {
             await realTimePrice({
@@ -143,6 +154,10 @@ const Home: NextPage = () => {
             });
           }
         }
+      }
+
+      if (pageNo === quotient.toString()) {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error", error);
@@ -164,11 +179,18 @@ const Home: NextPage = () => {
       <Selection
         currentTab={currentTab}
         searchButtonClick={searchButtonClick}
+        isLoading={isLoading}
       />
       {currentTab === "정산 가격 정보" ? (
-        <SettlementProductList products={settlementProductList} />
+        <SettlementProductList
+          products={settlementProductList}
+          isLoading={isLoading}
+        />
       ) : (
-        <RealTimeProductList products={realtimeProductList} />
+        <RealTimeProductList
+          products={realtimeProductList}
+          isLoading={isLoading}
+        />
       )}
       <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />
     </div>

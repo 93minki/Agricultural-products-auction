@@ -19,6 +19,7 @@ interface SearchObj {
 interface SelectionProps {
   searchButtonClick: ({ date, market, company, product }: SearchObj) => void;
   currentTab: string;
+  isLoading: boolean;
 }
 
 interface CompanyListProps {
@@ -26,7 +27,11 @@ interface CompanyListProps {
   cmpCd: string;
 }
 
-const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
+const Selection = ({
+  searchButtonClick,
+  currentTab,
+  isLoading,
+}: SelectionProps) => {
   const getCurrentDate = useCallback(() => {
     const today = new Date();
     const year = today.getFullYear().toString();
@@ -54,7 +59,6 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   };
 
   const handleCompanyChange = (e: SelectChangeEvent) => {
-    console.log("company change", e);
     setCurrentCompany(e.target.value);
   };
 
@@ -68,16 +72,6 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   };
 
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log(
-      "searchDate",
-      searchDate,
-      "currentMarket",
-      currentMarket,
-      "currentCompany",
-      currentCompany,
-      "product",
-      searchWord
-    );
     if (currentTab === "정산 가격 정보") {
       if (searchDate && currentMarket && searchWord) {
         searchButtonClick({
@@ -109,6 +103,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
           defaultValue={searchDate}
           InputLabelProps={{ shrink: true }}
           onChange={handleDateChange}
+          disabled={isLoading}
         />
       ) : (
         ""
@@ -120,6 +115,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
           value={currentMarket}
           label="도매시장"
           onChange={handleMarketChange}
+          disabled={isLoading}
         >
           {wholeMarketList.map((market) => (
             <MenuItem key={market.name} value={market.whsalCd}>
@@ -134,6 +130,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
           value={currentCompany}
           label="법인명"
           onChange={handleCompanyChange}
+          disabled={isLoading}
         >
           {currentCompanyList.map((company) => (
             <MenuItem key={company.cmpCd} value={company.cmpCd}>
@@ -147,10 +144,15 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
         id="outlined-basic"
         label="상품명"
         onChange={handleSearchWordChange}
+        disabled={isLoading}
       >
         {searchWord}
       </S.SearchWord>
-      <S.SearchButton variant="contained" onClick={handleSearchButtonClick}>
+      <S.SearchButton
+        variant="contained"
+        onClick={handleSearchButtonClick}
+        disabled={isLoading}
+      >
         검색
       </S.SearchButton>
     </S.SelectionLayout>
