@@ -14,14 +14,15 @@ const SettlementProductList = ({ products, isLoading }: ProductListProps) => {
 
   return (
     <S.ListLayout>
-      {isLoading ? (
+      <Loading />
+      {/* {isLoading ? (
         <Loading />
       ) : (
         products &&
         products.map((product) => (
           <SettlementProduct key={product.rn} props={product} />
         ))
-      )}
+      )} */}
     </S.ListLayout>
   );
 };
