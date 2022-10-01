@@ -1,5 +1,5 @@
 export interface SettlementSearchProps {
-  date?: string;
+  date: string;
   market: string;
   company: string;
   product: string;

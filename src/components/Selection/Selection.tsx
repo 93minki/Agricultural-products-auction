@@ -45,6 +45,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   const [searchDate, setSearchDate] = useState(getCurrentDate);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
+    console.log("market change", e);
     setCurrentMarket(e.target.value);
     const companyList = wholeMarketList.filter(
       (market) => market.whsalCd === e.target.value
@@ -53,6 +54,7 @@ const Selection = ({ searchButtonClick, currentTab }: SelectionProps) => {
   };
 
   const handleCompanyChange = (e: SelectChangeEvent) => {
+    console.log("company change", e);
     setCurrentCompany(e.target.value);
   };
 

@@ -17,6 +17,14 @@ import { getRealTimePirce } from "./api/realTimePrice";
 import RealTimeProductList from "../src/components/RealTimeProductList/RealTimeProductList";
 import ScrollToTop from "../src/components/ScrollToTop/ScrollToTop";
 
+interface SearchDataProps {
+  pageNo: string;
+  date: string;
+  market: string;
+  product: string;
+  company: string;
+}
+
 const Home: NextPage = () => {
   const [settlementProductList, setSettlementProductList] = useState<
     SettlementReceiveDatas[]
@@ -25,13 +33,6 @@ const Home: NextPage = () => {
     RealTimeReceiveDatas[]
   >([]);
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
-
-  const [searchDataObject, setSearchDataObject] = useState({
-    date: "",
-    market: "",
-    company: "",
-    product: "",
-  });
 
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     setSettlementProductList((prev) => [...prev, ...listItem]);
@@ -57,34 +58,75 @@ const Home: NextPage = () => {
     company,
     product,
   }: SettlementSearchProps) => {
-    console.log(
-      "date",
+    const searchDataObject = {
+      pageNo: "1",
       date,
-      "market",
       market,
-      "product",
       product,
-      "company",
-      company
-    );
-    setSearchDataObject({ date: date as string, market, company, product });
+      company,
+    };
     if (currentTab === "정산 가격 정보") {
-      settlementPrice("1");
+      settlementPrice(searchDataObject);
     } else {
-      realTimePrice("1");
+      realTimePrice(searchDataObject);
     }
   };
 
-  const realTimePrice = async (pageNo: string) => {
+  const settlementPrice = async ({
+    pageNo,
+    date,
+    market,
+    product,
+    company,
+  }: SearchDataProps) => {
+    try {
+      const getData: SettlementReceiveAllData = await getSettlementPrice({
+        pageNo,
+        saleDate: date,
+        whsalCd: market,
+        cmpCd: company,
+      });
+      const target = getData.data.filter((data) =>
+        data.smallName.includes(product)
+      );
+      getSettlementDatas(target);
+
+      if (pageNo === "1") {
+        const quotient = Math.ceil(getData.totCnt / 1000);
+        if (quotient > 1) {
+          for (let i = 2; i <= quotient; i++) {
+            console.log("second page start");
+            await settlementPrice({
+              pageNo: `${i}`,
+              date,
+              market,
+              product,
+              company,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.log("selection error", error);
+    }
+  };
+
+  const realTimePrice = async ({
+    pageNo,
+    date,
+    market,
+    product,
+    company,
+  }: SearchDataProps) => {
     try {
       const getData: RealTimeReceiveAllData = await getRealTimePirce({
         pageNo,
-        whsalCd: searchDataObject.market,
-        cmpCd: searchDataObject.company,
+        whsalCd: market,
+        cmpCd: company,
       });
 
       const target = getData.data.filter((data) =>
-        data.smallName.includes(searchDataObject.product)
+        data.smallName.includes(product)
       );
       getRealTimeDatas(target);
 
@@ -92,42 +134,18 @@ const Home: NextPage = () => {
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (quotient > 1) {
           for (let i = 2; i <= quotient; i++) {
-            await realTimePrice(`${i}`);
+            await realTimePrice({
+              pageNo: `${i}`,
+              date,
+              market,
+              product,
+              company,
+            });
           }
         }
       }
     } catch (error) {
       console.log("error", error);
-    }
-  };
-
-  const settlementPrice = async (pageNo: string) => {
-    try {
-      const getData: SettlementReceiveAllData = await getSettlementPrice({
-        pageNo,
-        saleDate: searchDataObject.date,
-        whsalCd: searchDataObject.market,
-        cmpCd: searchDataObject.company,
-      });
-      console.log("getData", getData, pageNo);
-      const target = getData.data.filter((data) =>
-        data.smallName.includes(searchDataObject.product)
-      );
-      getSettlementDatas(target);
-
-      if (pageNo === "1") {
-        console.log("PageNo 1 !!!");
-        const quotient = Math.ceil(getData.totCnt / 1000);
-        console.log("quotient", quotient);
-        if (quotient > 1) {
-          for (let i = 2; i <= quotient; i++) {
-            console.log("second page start");
-            await settlementPrice(`${i}`);
-          }
-        }
-      }
-    } catch (error) {
-      console.log("selection error", error);
     }
   };
 
