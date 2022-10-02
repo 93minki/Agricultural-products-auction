@@ -145,32 +145,37 @@ const Home: NextPage = () => {
         cmpCd: company,
       });
 
-      const target = getData.data.filter((data) =>
-        data.smallName.includes(product)
-      );
-      getRealTimeDatas(target);
+      if (getData.hasOwnProperty("data")) {
+        const target = getData.data.filter((data) =>
+          data.smallName.includes(product)
+        );
+        getRealTimeDatas(target);
 
-      const quotient =
-        getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);
-      if (pageNo === "1") {
-        if (quotient > 1) {
-          for (let i = 2; i <= quotient; i++) {
-            await realTimePrice({
-              pageNo: `${i}`,
-              date,
-              market,
-              product,
-              company,
-            });
+        const quotient =
+          getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);
+        if (pageNo === "1") {
+          if (quotient > 1) {
+            for (let i = 2; i <= quotient; i++) {
+              await realTimePrice({
+                pageNo: `${i}`,
+                date,
+                market,
+                product,
+                company,
+              });
+            }
           }
         }
-      }
 
-      if (pageNo === quotient.toString()) {
-        setIsLoading(false);
-        if (target.length === 0) {
-          setMessage("검색 결과가 없습니다!");
+        if (pageNo === quotient.toString()) {
+          setIsLoading(false);
+          if (target.length === 0) {
+            setMessage("검색 결과가 없습니다!");
+          }
         }
+      } else {
+        console.log("Fail!");
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error", error);
