@@ -34,10 +34,8 @@ const Home: NextPage = () => {
     RealTimeReceiveDatas[]
   >([]);
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
-
   const [isLoading, setIsLoading] = useState(false);
   const [isSearchError, setIsSearchError] = useState(false);
-
   const [message, setMessage] = useState("");
 
   const [errorStatus, setErrorStatus] = useState({
@@ -224,17 +222,27 @@ const Home: NextPage = () => {
         isLoading={isLoading}
       />
       {currentTab === "정산 가격 정보" ? (
-        <SettlementProductList
-          products={settlementProductList}
-          isLoading={isLoading}
-          message={message}
-        />
+        <>
+          <SettlementProductList
+            products={settlementProductList}
+            isLoading={isLoading}
+            message={message}
+          />
+          {settlementProductList.length > 0 && (
+            <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />
+          )}
+        </>
       ) : (
-        <RealTimeProductList
-          products={realtimeProductList}
-          isLoading={isLoading}
-          message={message}
-        />
+        <>
+          <RealTimeProductList
+            products={realtimeProductList}
+            isLoading={isLoading}
+            message={message}
+          />
+          {realtimeProductList.length > 0 && (
+            <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />
+          )}
+        </>
       )}
       {isSearchError && (
         <ErrorState
@@ -242,7 +250,6 @@ const Home: NextPage = () => {
           errorMessage={errorStatus.errorMessage}
         />
       )}
-      <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />
     </div>
   );
 };
