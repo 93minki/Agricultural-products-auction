@@ -150,7 +150,8 @@ const Home: NextPage = () => {
       );
       getRealTimeDatas(target);
 
-      const quotient = Math.ceil(getData.totCnt / 1000);
+      const quotient =
+        getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);
       if (pageNo === "1") {
         if (quotient > 1) {
           for (let i = 2; i <= quotient; i++) {
