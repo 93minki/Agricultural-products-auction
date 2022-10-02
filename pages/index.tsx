@@ -16,6 +16,7 @@ import { getSettlementPrice } from "./api/settlementPrice";
 import { getRealTimePirce } from "./api/realTimePrice";
 import RealTimeProductList from "../src/components/RealTimeProductList/RealTimeProductList";
 import ScrollToTop from "../src/components/ScrollToTop/ScrollToTop";
+import ErrorState from "../src/components/ErrorState/ErrorState";
 
 interface SearchDataProps {
   pageNo: string;
@@ -35,8 +36,14 @@ const Home: NextPage = () => {
   const [currentTab, setCurrentTab] = useState("정산 가격 정보");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearchError, setIsSearchError] = useState(false);
 
   const [message, setMessage] = useState("");
+
+  const [errorStatus, setErrorStatus] = useState({
+    errorCode: "",
+    errorMessage: "",
+  });
 
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     setSettlementProductList((prev) => [...prev, ...listItem]);
@@ -53,6 +60,7 @@ const Home: NextPage = () => {
     } else {
       setRealTimeProductList([]);
     }
+    setIsSearchError(false);
     setMessage("");
     setCurrentTab(header);
   };
@@ -98,32 +106,42 @@ const Home: NextPage = () => {
         cmpCd: company,
       });
 
-      if (getData.data.length === 0) {
-        setIsLoading(false);
-        setMessage("검색 결과가 없습니다!");
-        return;
-      }
-      const target = getData.data.filter((data) =>
-        data.smallName.includes(product)
-      );
-      getSettlementDatas(target);
+      if (getData.hasOwnProperty("data")) {
+        setIsSearchError(false);
+        if (getData.data.length === 0) {
+          setIsLoading(false);
+          setMessage("검색 결과가 없습니다!");
+          return;
+        }
+        const target = getData.data.filter((data) =>
+          data.smallName.includes(product)
+        );
+        getSettlementDatas(target);
 
-      const quotient = Math.ceil(getData.totCnt / 1000);
-      if (pageNo === "1") {
-        if (quotient > 1) {
-          for (let i = 2; i <= quotient; i++) {
-            await settlementPrice({
-              pageNo: `${i}`,
-              date,
-              market,
-              product,
-              company,
-            });
+        const quotient = Math.ceil(getData.totCnt / 1000);
+        if (pageNo === "1") {
+          if (quotient > 1) {
+            for (let i = 2; i <= quotient; i++) {
+              await settlementPrice({
+                pageNo: `${i}`,
+                date,
+                market,
+                product,
+                company,
+              });
+            }
           }
         }
-      }
 
-      if (pageNo === quotient.toString()) {
+        if (pageNo === quotient.toString()) {
+          setIsLoading(false);
+        }
+      } else {
+        setIsSearchError(true);
+        setErrorStatus({
+          errorCode: getData.errorCode,
+          errorMessage: getData.errorText,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -146,6 +164,7 @@ const Home: NextPage = () => {
       });
 
       if (getData.hasOwnProperty("data")) {
+        setIsSearchError(false);
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
@@ -174,7 +193,12 @@ const Home: NextPage = () => {
           }
         }
       } else {
-        console.log("Fail!");
+        setIsSearchError(true);
+        console.log(getData);
+        setErrorStatus({
+          errorCode: getData.errorCode,
+          errorMessage: getData.errorText,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -210,6 +234,12 @@ const Home: NextPage = () => {
           products={realtimeProductList}
           isLoading={isLoading}
           message={message}
+        />
+      )}
+      {isSearchError && (
+        <ErrorState
+          errorCode={errorStatus.errorCode}
+          errorMessage={errorStatus.errorMessage}
         />
       )}
       <ScrollToTop handleToTopButtonClick={handleToTopButtonClick} />

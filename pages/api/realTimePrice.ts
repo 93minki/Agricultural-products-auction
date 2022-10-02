@@ -9,7 +9,7 @@ export const getRealTimePirce = async (query: RealTimePriceRequest) => {
   try {
     const res = await axios.get("/agromarket-realtime", {
       params: {
-        serviceKey: "sdadsdasdsas",
+        serviceKey,
         apiType,
         pageNo: query.pageNo,
         whsalCd: query.whsalCd,
