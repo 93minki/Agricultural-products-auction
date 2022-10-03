@@ -12,8 +12,8 @@ import type {
   RealTimeReceiveDatas,
   RealTimeReceiveAllData,
 } from "../src/Types/RealTimePriceType";
-import { getSettlementPrice } from "./api/settlementPrice";
-import { getRealTimePirce } from "./api/realTimePrice";
+import { getSettlementPrice } from "../src/api/settlementPrice";
+import { getRealTimePirce } from "../src/api/realTimePrice";
 import RealTimeProductList from "../src/components/RealTimeProductList/RealTimeProductList";
 import ScrollToTop from "../src/components/ScrollToTop/ScrollToTop";
 import ErrorState from "../src/components/ErrorState/ErrorState";

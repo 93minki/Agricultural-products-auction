@@ -1,16 +1,11 @@
 import axios from "axios";
-import { RealTimePriceRequest } from "../../src/Types/RealTimePriceType";
-
-const serviceKey = `${process.env.NEXT_PUBLIC_API_KEY}`;
-const apiType = "json";
+import { RealTimePriceRequest } from "../Types/RealTimePriceType";
 
 export const getRealTimePirce = async (query: RealTimePriceRequest) => {
-  console.log(query);
   try {
     const res = await axios.get("/agromarket-realtime", {
       params: {
-        serviceKey,
-        apiType,
+        apiType: "json",
         pageNo: query.pageNo,
         whsalCd: query.whsalCd,
         cmpCd: query.cmpCd,
