@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@mui/material";
 import { RealTimeReceiveDatas } from "../../Types/RealTimePriceType";
 import * as S from "./style";
 
@@ -11,6 +12,10 @@ const RealTimeProducts = ({ props }: ProductProps) => {
       <S.ProductTitle>
         {props.sanName ? props.sanName : "산지명이 없습니다."}
       </S.ProductTitle>
+      <Breadcrumbs separator=">" aria-label="breadcrumb">
+        <span>{props.largeName}</span>
+        <span>{props.midName}</span>
+      </Breadcrumbs>
       <S.ProductContent>
         <div>
           <span>{props.smallName}</span>

@@ -1,3 +1,4 @@
+import { Breadcrumbs } from "@mui/material";
 import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import * as S from "./style";
 interface ProductProps {
@@ -17,6 +18,10 @@ const SettlementProduct = ({ props }: ProductProps) => {
   return (
     <S.ProductLayout>
       <S.ProductTitle>{props.sanName}</S.ProductTitle>
+      <Breadcrumbs separator=">" aria-label="breadcrumb">
+        <span>{props.largeName}</span>
+        <span>{props.midName}</span>
+      </Breadcrumbs>
       <S.ProductHeader>
         <span>{props.smallName}</span> 정산일자:
         <span>{changeDate(props.saleDate)}</span>
