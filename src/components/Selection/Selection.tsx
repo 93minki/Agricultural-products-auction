@@ -7,6 +7,8 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  Badge,
+  Button,
 } from "@mui/material";
 import * as S from "./style";
 import { getStorageItem } from "../../utils/localStorage";
@@ -54,17 +56,10 @@ const Selection = ({
   const [searchWord, setSearchWord] = useState("");
   const [searchDate, setSearchDate] = useState(getCurrentDate);
   const [recentSearchWord, setRecentSearchWord] = useState<string[]>([]);
-  console.log("initial Type", typeof recentSearchWord);
 
   useEffect(() => {
     const recent = getStorageItem();
-    console.log("get recent type", typeof recent);
     setRecentSearchWord(recent);
-    console.log(
-      "recentSearchWord type",
-      typeof recentSearchWord,
-      recentSearchWord
-    );
   }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
@@ -172,10 +167,29 @@ const Selection = ({
       >
         {searchWord}
       </S.SearchWord>
-      <div>
+      <S.RecentKeyword>
+        최근 검색어
         {recentSearchWord &&
-          recentSearchWord.map((word) => <li key={Math.random()}>{word}</li>)}
-      </div>
+          recentSearchWord.map((word) => (
+            <Badge
+              badgeContent={"X"}
+              color="primary"
+              onClick={() => {
+                console.log("Badge Click");
+              }}
+            >
+              <Button
+                key={Math.random()}
+                variant="outlined"
+                onClick={() => {
+                  console.log("Click item", word);
+                }}
+              >
+                {word}
+              </Button>
+            </Badge>
+          ))}
+      </S.RecentKeyword>
       <S.SearchButton
         variant="contained"
         onClick={handleSearchButtonClick}

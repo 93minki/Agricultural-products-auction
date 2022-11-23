@@ -25,3 +25,9 @@ export const SearchWord = styled(TextField)`
 export const SearchButton = styled(Button)`
   flex-grow: 0;
 `;
+
+export const RecentKeyword = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
