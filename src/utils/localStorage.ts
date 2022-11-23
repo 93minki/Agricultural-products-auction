@@ -4,4 +4,6 @@ export const getStorageItem = () => {
   return keywordList === null ? [] : JSON.parse(keywordList);
 };
 
-export const setStorageItem = (keyword: string) => {};
+export const setStorageItem = (keyword: string[]) => {
+  localStorage.setItem("keyword", JSON.stringify(keyword));
+};

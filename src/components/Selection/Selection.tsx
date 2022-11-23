@@ -7,11 +7,10 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Badge,
-  Button,
 } from "@mui/material";
+import RecentKeyword from "../RecentKeyword/RecentKeyword";
 import * as S from "./style";
-import { getStorageItem } from "../../utils/localStorage";
+import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 
 // TODO: 로컬 저장소에서 검색어들을 가져와서 변수에 저장
 // 변수에 있는 검색어들을 보여줌
@@ -55,11 +54,11 @@ const Selection = ({
   >([]);
   const [searchWord, setSearchWord] = useState("");
   const [searchDate, setSearchDate] = useState(getCurrentDate);
-  const [recentSearchWord, setRecentSearchWord] = useState<string[]>([]);
+  const [recentKeyword, setRecentKeyword] = useState<string[]>([]);
 
   useEffect(() => {
     const recent = getStorageItem();
-    setRecentSearchWord(recent);
+    setRecentKeyword(recent);
   }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
@@ -104,12 +103,11 @@ const Selection = ({
         });
       }
     }
-    setRecentSearchWord([...recentSearchWord, searchWord]);
-    console.log("recentword", recentSearchWord);
-    localStorage.setItem(
-      "keyword",
-      JSON.stringify([...recentSearchWord, searchWord])
-    );
+    const recentKeyword = getStorageItem();
+    if (!recentKeyword.includes(searchWord)) {
+      setStorageItem([...recentKeyword, searchWord]);
+      setRecentKeyword([...recentKeyword, searchWord]);
+    }
   };
 
   return (
@@ -167,29 +165,7 @@ const Selection = ({
       >
         {searchWord}
       </S.SearchWord>
-      <S.RecentKeyword>
-        최근 검색어
-        {recentSearchWord &&
-          recentSearchWord.map((word) => (
-            <Badge
-              badgeContent={"X"}
-              color="primary"
-              onClick={() => {
-                console.log("Badge Click");
-              }}
-            >
-              <Button
-                key={Math.random()}
-                variant="outlined"
-                onClick={() => {
-                  console.log("Click item", word);
-                }}
-              >
-                {word}
-              </Button>
-            </Badge>
-          ))}
-      </S.RecentKeyword>
+      <RecentKeyword recentKeyword={recentKeyword} />
       <S.SearchButton
         variant="contained"
         onClick={handleSearchButtonClick}
