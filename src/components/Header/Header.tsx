@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import * as S from "./style";
 
-// TODO: Header에서는 현재 어떤 페이지 인지, 다른 페이지로 이동할 수 있는 탭을 제공
 interface HeaderProps {
   currentPage: string;
   getCurrentTab: (tab: string) => void;
