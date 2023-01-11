@@ -1,34 +1,54 @@
-import { Badge, Button } from "@mui/material";
+import { nanoid } from "nanoid";
+import React, { Dispatch, SetStateAction } from "react";
+import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 
 interface RecentKeywordProps {
   recentKeyword: string[];
+  setSearchWord: Dispatch<SetStateAction<string>>;
+  setRecentKeyword: Dispatch<SetStateAction<string[]>>;
 }
 
-const RecentKeyword = ({ recentKeyword }: RecentKeywordProps) => {
-  console.log("RecentKeyword Component");
+const RecentKeyword = ({
+  recentKeyword,
+  setSearchWord,
+  setRecentKeyword,
+}: RecentKeywordProps) => {
+  const handleKeywordClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement;
+    setSearchWord(target.name);
+  };
+
+  const handleDeleteButton = (
+    word: string,
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    const keywordList = getStorageItem().filter((item) => item !== word);
+    console.log("after delete", keywordList);
+    setRecentKeyword(keywordList);
+    setStorageItem(keywordList);
+  };
 
   return (
     <S.RecentKeyword>
       {recentKeyword &&
         recentKeyword.map((word) => (
-          <Badge
-            badgeContent={"X"}
-            color="primary"
-            onClick={() => {
-              console.log("Badge Click");
-            }}
-          >
-            <Button
-              key={Math.random()}
+          <S.KeyWordList key={nanoid()}>
+            <S.KeyWordItems
               variant="outlined"
-              onClick={() => {
-                console.log("Click item", word);
-              }}
+              onClick={handleKeywordClick}
+              name={word}
             >
               {word}
-            </Button>
-          </Badge>
+            </S.KeyWordItems>
+            <S.BadgeEdge
+              onClick={(e) => {
+                handleDeleteButton(word, e);
+              }}
+            >
+              X
+            </S.BadgeEdge>
+          </S.KeyWordList>
         ))}
     </S.RecentKeyword>
   );

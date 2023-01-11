@@ -62,7 +62,6 @@ const Selection = ({
   }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
-    console.log("market change", e);
     setCurrentMarket(e.target.value);
     const companyList = wholeMarketList.filter(
       (market) => market.whsalCd === e.target.value
@@ -162,10 +161,15 @@ const Selection = ({
         label="상품명"
         onChange={handleSearchWordChange}
         disabled={isLoading}
+        value={searchWord}
       >
         {searchWord}
       </S.SearchWord>
-      <RecentKeyword recentKeyword={recentKeyword} />
+      <RecentKeyword
+        recentKeyword={recentKeyword}
+        setSearchWord={setSearchWord}
+        setRecentKeyword={setRecentKeyword}
+      />
       <S.SearchButton
         variant="contained"
         onClick={handleSearchButtonClick}
