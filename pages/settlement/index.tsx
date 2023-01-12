@@ -5,7 +5,7 @@ const SettlementPricePage = () => {
   return (
     <div>
       <Title title="정산 가격 정보" />
-      <SearchInfo />
+      <SearchInfo type="settlement" />
     </div>
   );
 };

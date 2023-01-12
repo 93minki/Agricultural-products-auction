@@ -5,7 +5,7 @@ const RealTimePricePage = () => {
   return (
     <div>
       <Title title="실시간 가격 정보" />
-      <SearchInfo />
+      <SearchInfo type="realtime" />
     </div>
   );
 };

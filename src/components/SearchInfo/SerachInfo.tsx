@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import type { ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import {
   FormControl,
@@ -6,35 +7,102 @@ import {
   MenuItem,
   Select,
   TextField,
+  SelectChangeEvent,
+  Button,
 } from "@mui/material";
+import * as S from "./style";
 
-const SearchInfo = () => {
+const SearchInfo = ({ type }: { type: string }) => {
+  const getCurrentDate = useCallback(() => {
+    const today = new Date();
+    const year = today.getFullYear().toString();
+    const month = (today.getMonth() + 1).toString();
+    const date = today.getDate().toString();
+
+    return year + "-" + month.padStart(2, "0") + "-" + date.padStart(2, "0");
+  }, []);
+
+  const [searchDate, setSearchDate] = useState(getCurrentDate);
   const [currentMarket, setCurrentMarket] = useState("");
   const [currentCompany, setCurrentCompany] = useState("");
   const [selectCompanyList, setSelectCompanyList] = useState<
     { name: string; cmpCd: string }[]
   >([]);
+  const [searchWord, setSearchWord] = useState("");
+
+  const handleMarketChange = (e: SelectChangeEvent) => {
+    setCurrentMarket(e.target.value);
+    const companyList = wholeMarketList.filter(
+      (market) => market.whsalCd === e.target.value
+    );
+    setSelectCompanyList(companyList[0].cmpList);
+  };
+
+  const handleCompanyChange = (e: SelectChangeEvent) => {
+    setCurrentCompany(e.target.value);
+  };
+
+  const handleSearchWordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.currentTarget.value);
+  };
+
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const date = e.currentTarget.value;
+    setSearchDate(date);
+  };
 
   return (
-    <FormControl>
-      <InputLabel>도매시장</InputLabel>
-      <Select value={currentMarket} label="도매시장">
-        {wholeMarketList.map((market) => (
-          <MenuItem key={market.name} value={market.whsalCd}>
-            {market.name}
-          </MenuItem>
-        ))}
-      </Select>
-      <InputLabel>법인명</InputLabel>
-      <Select value={currentCompany} label="법인명">
-        {selectCompanyList.map((company) => (
-          <MenuItem key={company.cmpCd} value={company.cmpCd}>
-            {company.name}
-          </MenuItem>
-        ))}
-      </Select>
-      <TextField id="outlined-basic" label="상품명"></TextField>
-    </FormControl>
+    <S.SearchInfoLayout>
+      {type === "settlement" ? (
+        <TextField
+          id="date"
+          label="날짜"
+          type="date"
+          defaultValue={searchDate}
+          InputLabelProps={{ shrink: true }}
+          onChange={handleDateChange}
+        />
+      ) : (
+        ""
+      )}
+      <FormControl>
+        <InputLabel>도매시장</InputLabel>
+        <Select
+          value={currentMarket}
+          label="도매시장"
+          onChange={handleMarketChange}
+        >
+          {wholeMarketList.map((market) => (
+            <MenuItem key={market.name} value={market.whsalCd}>
+              {market.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl>
+        <InputLabel>법인명</InputLabel>
+        <Select
+          value={currentCompany}
+          label="법인명"
+          onChange={handleCompanyChange}
+        >
+          {selectCompanyList.map((company) => (
+            <MenuItem key={company.cmpCd} value={company.cmpCd}>
+              {company.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <TextField
+        id="outlined-basic"
+        label="상품명"
+        value={searchWord}
+        onChange={handleSearchWordChange}
+      >
+        {searchWord}
+      </TextField>
+      <Button variant="contained">검색</Button>
+    </S.SearchInfoLayout>
   );
 };
 
