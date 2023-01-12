@@ -6,7 +6,8 @@ const nextConfig = {
     return [
       {
         source: "/agromarket-settle",
-        destination: `${process.env.NEXT_PUBLIC_API_SETTLEMENT_PRICE}?serviceKey=${process.env.NEXT_PUBLIC_API_KEY}`,
+        destination: `${process.env.NEXT_PUBLIC_API_SETTLEMENT_PRICE}`,
+        //?serviceKey=${process.env.NEXT_PUBLIC_API_KEY}
       },
       {
         source: "/agromarket-realtime",
