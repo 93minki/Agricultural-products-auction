@@ -7,6 +7,7 @@ export const getSettlementPrice = async (query: SettlementPirceRequest) => {
   try {
     const res = await axios.get("/agromarket-settle", {
       params: {
+        serviceKey: process.env.NEXT_PUBLIC_API_KEY,
         apiType,
         pageNo: query.pageNo,
         saleDate: query.saleDate,
