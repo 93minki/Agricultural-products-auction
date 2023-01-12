@@ -50,11 +50,11 @@ const Selection = ({
   >([]);
   const [searchWord, setSearchWord] = useState("");
   const [searchDate, setSearchDate] = useState(getCurrentDate);
-  const [recentKeyword, setRecentKeyword] = useState<string[]>([]);
+  const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
   useEffect(() => {
     const recent = getStorageItem();
-    setRecentKeyword(recent);
+    setRecentKeywords(recent);
   }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
@@ -103,7 +103,7 @@ const Selection = ({
     const recentKeyword = getStorageItem();
     if (!recentKeyword.includes(searchWord)) {
       setStorageItem([...recentKeyword, searchWord]);
-      setRecentKeyword([...recentKeyword, searchWord]);
+      setRecentKeywords([...recentKeyword, searchWord]);
     }
   };
 
@@ -164,9 +164,9 @@ const Selection = ({
         {searchWord}
       </S.SearchWord>
       <RecentKeyword
-        recentKeyword={recentKeyword}
+        recentKeywords={recentKeywords}
         setSearchWord={setSearchWord}
-        setRecentKeyword={setRecentKeyword}
+        setRecentKeywords={setRecentKeywords}
       />
       <S.SearchButton
         variant="contained"

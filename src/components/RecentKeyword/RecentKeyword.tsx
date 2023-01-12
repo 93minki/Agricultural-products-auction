@@ -4,15 +4,15 @@ import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 
 interface RecentKeywordProps {
-  recentKeyword: string[];
+  recentKeywords: string[];
   setSearchWord: Dispatch<SetStateAction<string>>;
-  setRecentKeyword: Dispatch<SetStateAction<string[]>>;
+  setRecentKeywords: Dispatch<SetStateAction<string[]>>;
 }
 
 const RecentKeyword = ({
-  recentKeyword,
+  recentKeywords,
   setSearchWord,
-  setRecentKeyword,
+  setRecentKeywords,
 }: RecentKeywordProps) => {
   const handleKeywordClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -25,14 +25,14 @@ const RecentKeyword = ({
   ) => {
     const keywordList = getStorageItem().filter((item) => item !== word);
     console.log("after delete", keywordList);
-    setRecentKeyword(keywordList);
+    setRecentKeywords(keywordList);
     setStorageItem(keywordList);
   };
 
   return (
     <S.RecentKeyword>
-      {recentKeyword &&
-        recentKeyword.map((word) => (
+      {recentKeywords &&
+        recentKeywords.map((word) => (
           <S.KeyWordList key={nanoid()}>
             <S.KeyWordItems
               variant="outlined"

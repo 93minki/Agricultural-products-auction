@@ -1,6 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
+import RecentKeyword from "../RecentKeyword/RecentKeyword";
+import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import {
   FormControl,
   InputLabel,
@@ -11,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import * as S from "./style";
+import SearchButton from "../SearchButton/SearchButton";
 
 const SearchInfo = ({ type }: { type: string }) => {
   const getCurrentDate = useCallback(() => {
@@ -29,6 +32,12 @@ const SearchInfo = ({ type }: { type: string }) => {
     { name: string; cmpCd: string }[]
   >([]);
   const [searchWord, setSearchWord] = useState("");
+  const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
+
+  useEffect(() => {
+    const recent = getStorageItem();
+    setRecentKeywords(recent);
+  }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value);
@@ -101,7 +110,19 @@ const SearchInfo = ({ type }: { type: string }) => {
       >
         {searchWord}
       </TextField>
-      <Button variant="contained">검색</Button>
+      <RecentKeyword
+        recentKeywords={recentKeywords}
+        setSearchWord={setSearchWord}
+        setRecentKeywords={setRecentKeywords}
+      />
+      {/* <Button variant="contained" onClick={handleSearchButtonClick}>
+        검색
+      </Button> */}
+      <SearchButton
+        type={type}
+        searchInfo={{ searchDate, currentMarket, currentCompany, searchWord }}
+        setRecentKeywords={setRecentKeywords}
+      />
     </S.SearchInfoLayout>
   );
 };
