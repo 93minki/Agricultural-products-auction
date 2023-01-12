@@ -12,10 +12,6 @@ import RecentKeyword from "../RecentKeyword/RecentKeyword";
 import * as S from "./style";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 
-// TODO: 로컬 저장소에서 검색어들을 가져와서 변수에 저장
-// 변수에 있는 검색어들을 보여줌
-// 검색을 할 때마다 검색어를 추가해야 함.
-
 interface SearchObj {
   date: string;
   market: string;
@@ -23,9 +19,9 @@ interface SearchObj {
   product: string;
 }
 interface SelectionProps {
-  searchButtonClick: ({ date, market, company, product }: SearchObj) => void;
-  currentTab: string;
-  isLoading: boolean;
+  searchButtonClick?: ({ date, market, company, product }: SearchObj) => void;
+  currentTab?: string;
+  isLoading?: boolean;
 }
 
 interface CompanyListProps {
@@ -85,21 +81,23 @@ const Selection = ({
   const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (currentTab === "정산 가격 정보") {
       if (searchDate && currentMarket && searchWord) {
-        searchButtonClick({
-          date: searchDate.replaceAll("-", ""),
-          market: currentMarket,
-          company: currentCompany,
-          product: searchWord,
-        });
+        searchButtonClick &&
+          searchButtonClick({
+            date: searchDate.replaceAll("-", ""),
+            market: currentMarket,
+            company: currentCompany,
+            product: searchWord,
+          });
       }
     } else {
       if (currentMarket && searchWord) {
-        searchButtonClick({
-          date: searchDate.replaceAll("-", ""),
-          market: currentMarket,
-          company: currentCompany,
-          product: searchWord,
-        });
+        searchButtonClick &&
+          searchButtonClick({
+            date: searchDate.replaceAll("-", ""),
+            market: currentMarket,
+            company: currentCompany,
+            product: searchWord,
+          });
       }
     }
     const recentKeyword = getStorageItem();
