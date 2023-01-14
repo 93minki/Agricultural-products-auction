@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import type { ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import RecentKeyword from "../RecentKeyword/RecentKeyword";
-import { getStorageItem, setStorageItem } from "../../utils/localStorage";
+import { getStorageItem } from "../../utils/localStorage";
 import {
   FormControl,
   InputLabel,
@@ -12,10 +12,16 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { RealTimeReceiveDatas } from "../../Types/RealTimePriceType";
-import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import * as S from "./style";
 import SearchButton from "../SearchButton/SearchButton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import {
+  selectCompany,
+  selectDate,
+  selectMarket,
+  selectProduct,
+} from "../../store/modules/searchInfo";
 
 interface SearchInfoProps {
   type: string;
@@ -40,6 +46,8 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
   const [searchWord, setSearchWord] = useState("");
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const recent = getStorageItem();
     setRecentKeywords(recent);
@@ -51,19 +59,23 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
       (market) => market.whsalCd === e.target.value
     );
     setSelectCompanyList(companyList[0].cmpList);
+    dispatch(selectMarket("Market Select!"));
   };
 
   const handleCompanyChange = (e: SelectChangeEvent) => {
     setCurrentCompany(e.target.value);
+    dispatch(selectCompany(e.target.value));
   };
 
   const handleSearchWordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.currentTarget.value);
+    dispatch(selectProduct(e.currentTarget.value));
   };
 
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const date = e.currentTarget.value;
     setSearchDate(date);
+    dispatch(selectDate(date));
   };
 
   return (
