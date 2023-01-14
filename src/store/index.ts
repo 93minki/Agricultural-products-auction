@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer from "./modules";
+import rootReducer from "./modules";
+import searchInfo from "./modules/searchInfo";
+import products from "./modules/products";
 
 const makeStore = () => {
   const store = configureStore({
     reducer: {
-      reducer,
+      rootReducer,
     },
   });
   return store;
@@ -13,5 +15,9 @@ const makeStore = () => {
 const store = makeStore();
 
 export default store;
-
-export type RootState = ReturnType<typeof store.getState>;
+export interface RootState {
+  rootReducer: {
+    searchInfo: typeof searchInfo;
+    products: typeof products;
+  };
+}

@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// interface CompanyType {
-//   name: string;
-//   cmpCd: string;
-// }
 interface StateType {
   date: string;
   market: string;
@@ -14,7 +10,6 @@ interface StateType {
 const initialState: StateType = {
   date: "",
   market: "",
-  // company: { name: "", cmpCd: "" },
   company: "",
   product: "",
 };

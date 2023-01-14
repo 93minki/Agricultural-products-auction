@@ -1,26 +1,11 @@
-import { AnyAction, CombinedState, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
 
 import searchInfo from "./searchInfo";
+import products from "./products";
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
   searchInfo: searchInfo.reducer,
+  products: products.reducer,
 });
-// const reducer = (
-//   state:
-//     | CombinedState<{
-//         searchInfo: {
-//           date: string;
-//           market: string;
-//           company: string;
-//           product: string;
-//         };
-//       }>
-//     | undefined,
-//   action: AnyAction
-// ) => {
-//   return combineReducers({
-//     searchInfo,
-//   })(state, action);
-// };
 
-export default reducer;
+export default rootReducer;

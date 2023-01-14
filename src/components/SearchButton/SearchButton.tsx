@@ -1,4 +1,4 @@
-import type { MouseEvent, Dispatch, SetStateAction } from "react";
+import { MouseEvent, Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "@mui/material";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import {
@@ -14,8 +14,9 @@ import {
 } from "../../Types/RealTimePriceType";
 import { getRealTimePirce } from "../../api/realTimePrice";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { setSettlement } from "../../store/modules/products";
 
 // TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
 
@@ -31,30 +32,37 @@ const SearchButton = () => {
     // setRealTimeProductList((prev) => [...prev, ...listItem]);
   };
 
+  // const searchInfoData = useSelector((state: RootState) => state.searchInfo);
+  // console.log("searchInfoData", searchInfoData);
+  // const { date, market, company, product } = searchInfoData;
+
+  const dispatch = useDispatch();
+
   const searchInfoData = useSelector(
-    (state: RootState) => state.reducer.searchInfo
+    (state: RootState) => state.rootReducer.searchInfo
   );
-  const { date, market, company, product } = searchInfoData;
+  // const { date, market, company, product } = searchInfoData;
+  console.log("searchInfoData", searchInfoData);
 
   const searchButtonClick = () => {
-    const searchDataObject = {
-      pageNo: "1",
-      date,
-      market,
-      product,
-      company,
-    };
-    if (pathName === "/settlement") {
-      // setSettlementProductList([]);
-      // setMessage("");
-      // setIsLoading(true);
-      settlementPrice(searchDataObject);
-    } else {
-      // setRealTimeProductList([]);
-      // setMessage("");
-      // setIsLoading(true);
-      realTimePrice(searchDataObject);
-    }
+    // const searchDataObject = {
+    //   pageNo: "1",
+    //   date,
+    //   market,
+    //   product,
+    //   company,
+    // };
+    // if (pathName === "/settlement") {
+    //   // setSettlementProductList([]);
+    //   // setMessage("");
+    //   // setIsLoading(true);
+    //   settlementPrice(searchDataObject);
+    // } else {
+    //   // setRealTimeProductList([]);
+    //   // setMessage("");
+    //   // setIsLoading(true);
+    //   realTimePrice(searchDataObject);
+    // }
   };
 
   const settlementPrice = async ({
@@ -82,7 +90,9 @@ const SearchButton = () => {
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
+
         console.log("target", target);
+        dispatch(setSettlement(target));
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (pageNo === "1") {
           if (quotient > 1) {

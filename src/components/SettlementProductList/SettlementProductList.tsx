@@ -4,22 +4,23 @@ import * as S from "./style";
 import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import SettlementProduct from "../SettlementProducts/SettlementProduct";
 import Loading from "../Loading/Loading";
-interface ProductListProps {
-  products: SettlementReceiveDatas[];
-  isLoading: boolean;
-  message: string;
-}
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
-const SettlementProductList = ({
-  products,
-  isLoading,
-  message,
-}: ProductListProps) => {
-  console.log("productList", products);
+const SettlementProductList = () => {
+  // const itemList = useSelector((state: RootState) => {
+  //   state.products.settlement;
+  // });
+  // console.log("itemList", itemList);
+  const itemList = useSelector(
+    (state: RootState) => state.rootReducer.products
+  );
+  console.log("itemList", itemList);
 
   return (
     <S.ListLayout>
-      {isLoading ? (
+      {}
+      {/* {isLoading ? (
         <Loading />
       ) : products.length > 0 ? (
         products.map((product) => (
@@ -27,7 +28,7 @@ const SettlementProductList = ({
         ))
       ) : (
         <S.NoSearchResult>{message}</S.NoSearchResult>
-      )}
+      )} */}
     </S.ListLayout>
   );
 };
