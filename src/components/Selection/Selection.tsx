@@ -163,11 +163,11 @@ const Selection = ({
       >
         {searchWord}
       </S.SearchWord>
-      <RecentKeyword
+      {/* <RecentKeyword
         recentKeywords={recentKeywords}
         setSearchWord={setSearchWord}
         setRecentKeywords={setRecentKeywords}
-      />
+      /> */}
       <S.SearchButton
         variant="contained"
         onClick={handleSearchButtonClick}

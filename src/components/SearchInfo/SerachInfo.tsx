@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
-import RecentKeyword from "../RecentKeyword/RecentKeyword";
 import { getStorageItem } from "../../utils/localStorage";
 import {
   FormControl,
@@ -10,12 +9,9 @@ import {
   Select,
   TextField,
   SelectChangeEvent,
-  Button,
 } from "@mui/material";
 import * as S from "./style";
-import SearchButton from "../SearchButton/SearchButton";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
 import {
   selectCompany,
   selectDate,
@@ -44,22 +40,20 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
     { name: string; cmpCd: string }[]
   >([]);
   const [searchWord, setSearchWord] = useState("");
-  const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const recent = getStorageItem();
-    setRecentKeywords(recent);
+    dispatch(selectDate(getCurrentDate().replaceAll("-", "")));
   }, []);
 
   const handleMarketChange = (e: SelectChangeEvent) => {
     setCurrentMarket(e.target.value);
+    dispatch(selectMarket(e.target.value));
     const companyList = wholeMarketList.filter(
       (market) => market.whsalCd === e.target.value
     );
     setSelectCompanyList(companyList[0].cmpList);
-    dispatch(selectMarket("Market Select!"));
   };
 
   const handleCompanyChange = (e: SelectChangeEvent) => {
@@ -75,7 +69,7 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
   const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const date = e.currentTarget.value;
     setSearchDate(date);
-    dispatch(selectDate(date));
+    dispatch(selectDate(date.replaceAll("-", "")));
   };
 
   return (
@@ -128,11 +122,7 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
       >
         {searchWord}
       </TextField>
-      <RecentKeyword
-        recentKeywords={recentKeywords}
-        setSearchWord={setSearchWord}
-        setRecentKeywords={setRecentKeywords}
-      />
+
       {/* <Button variant="contained" onClick={handleSearchButtonClick}>
         검색
       </Button> */}

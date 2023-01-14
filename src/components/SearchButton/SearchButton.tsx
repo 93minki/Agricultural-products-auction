@@ -14,26 +14,14 @@ import {
 } from "../../Types/RealTimePriceType";
 import { getRealTimePirce } from "../../api/realTimePrice";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
-interface SearchButtonProps {
-  type: string;
-  searchInfo: {
-    searchDate: string;
-    currentMarket: string;
-    currentCompany: string;
-    searchWord: string;
-  };
-  setRecentKeywords: Dispatch<SetStateAction<string[]>>;
-}
+// TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
 
-const SearchButton = ({
-  type,
-  searchInfo,
-  setRecentKeywords,
-}: SearchButtonProps) => {
-  const { searchDate, currentMarket, currentCompany, searchWord } = searchInfo;
-
-  const router = useRouter;
+const SearchButton = () => {
+  const router = useRouter();
+  const pathName = router.pathname;
 
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     // setSettlementProductList((prev) => [...prev, ...listItem]);
@@ -43,12 +31,12 @@ const SearchButton = ({
     // setRealTimeProductList((prev) => [...prev, ...listItem]);
   };
 
-  const searchButtonClick = ({
-    date,
-    market,
-    company,
-    product,
-  }: SettlementSearchProps) => {
+  const searchInfoData = useSelector(
+    (state: RootState) => state.reducer.searchInfo
+  );
+  const { date, market, company, product } = searchInfoData;
+
+  const searchButtonClick = () => {
     const searchDataObject = {
       pageNo: "1",
       date,
@@ -56,7 +44,7 @@ const SearchButton = ({
       product,
       company,
     };
-    if (type === "settlement") {
+    if (pathName === "/settlement") {
       // setSettlementProductList([]);
       // setMessage("");
       // setIsLoading(true);
@@ -94,7 +82,7 @@ const SearchButton = ({
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-
+        console.log("target", target);
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (pageNo === "1") {
           if (quotient > 1) {
@@ -182,34 +170,11 @@ const SearchButton = ({
     }
   };
 
-  const handleSearchButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (type === "settlement") {
-      if (searchDate && currentMarket && searchWord) {
-        searchButtonClick({
-          date: searchDate.replaceAll("-", ""),
-          market: currentMarket,
-          company: currentCompany,
-          product: searchWord,
-        });
-      }
-    } else {
-      if (currentMarket && searchWord) {
-        searchButtonClick({
-          date: searchDate.replaceAll("-", ""),
-          market: currentMarket,
-          company: currentCompany,
-          product: searchWord,
-        });
-      }
-    }
-    const recentKeyword = getStorageItem();
-    if (!recentKeyword.includes(searchWord)) {
-      setStorageItem([...recentKeyword, searchWord]);
-      setRecentKeywords([...recentKeyword, searchWord]);
-    }
-  };
-
-  return <Button onClick={handleSearchButtonClick}>검색</Button>;
+  return (
+    <Button variant="contained" onClick={searchButtonClick}>
+      검색
+    </Button>
+  );
 };
 
 export default SearchButton;
