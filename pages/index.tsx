@@ -43,15 +43,6 @@ const Home: NextPage = () => {
     errorMessage: "",
   });
 
-  const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
-    setSettlementProductList((prev) => [...prev, ...listItem]);
-  };
-
-  const getRealTimeDatas = (listItem: RealTimeReceiveDatas[]) => {
-    console.log("listItem", listItem);
-    setRealTimeProductList((prev) => [...prev, ...listItem]);
-  };
-
   const getCurrentTab = (header: string) => {
     if (header === "정산 가격 정보") {
       setSettlementProductList([]);
@@ -114,7 +105,7 @@ const Home: NextPage = () => {
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-        getSettlementDatas(target);
+        setSettlementProductList((prev) => [...prev, ...target]);
 
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (pageNo === "1") {
@@ -166,7 +157,7 @@ const Home: NextPage = () => {
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-        getRealTimeDatas(target);
+        setRealTimeProductList((prev) => [...prev, ...target]);
 
         const quotient =
           getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);

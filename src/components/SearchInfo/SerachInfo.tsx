@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { wholeMarketList } from "../../utils/wholemarketList";
 import RecentKeyword from "../RecentKeyword/RecentKeyword";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
@@ -12,10 +12,16 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
+import { RealTimeReceiveDatas } from "../../Types/RealTimePriceType";
+import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import * as S from "./style";
 import SearchButton from "../SearchButton/SearchButton";
 
-const SearchInfo = ({ type }: { type: string }) => {
+interface SearchInfoProps {
+  type: string;
+}
+
+const SearchInfo = ({ type }: SearchInfoProps) => {
   const getCurrentDate = useCallback(() => {
     const today = new Date();
     const year = today.getFullYear().toString();
@@ -118,11 +124,12 @@ const SearchInfo = ({ type }: { type: string }) => {
       {/* <Button variant="contained" onClick={handleSearchButtonClick}>
         검색
       </Button> */}
-      <SearchButton
+      {/* <SearchButton
         type={type}
         searchInfo={{ searchDate, currentMarket, currentCompany, searchWord }}
         setRecentKeywords={setRecentKeywords}
-      />
+        setItemList={setItemList}
+      /> */}
     </S.SearchInfoLayout>
   );
 };

@@ -13,6 +13,7 @@ import {
   RealTimeReceiveDatas,
 } from "../../Types/RealTimePriceType";
 import { getRealTimePirce } from "../../api/realTimePrice";
+import { useRouter } from "next/router";
 
 interface SearchButtonProps {
   type: string;
@@ -31,6 +32,8 @@ const SearchButton = ({
   setRecentKeywords,
 }: SearchButtonProps) => {
   const { searchDate, currentMarket, currentCompany, searchWord } = searchInfo;
+
+  const router = useRouter;
 
   const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
     // setSettlementProductList((prev) => [...prev, ...listItem]);
@@ -91,7 +94,6 @@ const SearchButton = ({
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-        getSettlementDatas(target);
 
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (pageNo === "1") {
