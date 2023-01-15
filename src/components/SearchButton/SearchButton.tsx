@@ -1,9 +1,10 @@
+/* eslint-disable curly */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-shadow */
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@mui/material";
+import { Dispatch, SetStateAction } from "react";
 import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
 import { SearchDataProps } from "../../Types/SearchType";
 import { getSettlementPrice } from "../../api/settlementPrice";
@@ -18,9 +19,11 @@ import {
 import * as S from "./style";
 import { addStorageItem } from "../../utils/localStorage";
 
-// TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
+interface SearchButtonProps {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+}
 
-const SearchButton = () => {
+const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
   const router = useRouter();
   const pathName = router.pathname;
   const dispatch = useDispatch();
@@ -47,10 +50,11 @@ const SearchButton = () => {
 
       if (getData.hasOwnProperty("data")) {
         // setIsSearchError(false);
-        if (getData.data.length === 0)
-          // setIsLoading(false);
+        if (getData.data.length === 0) {
+          setIsLoading(false);
           // setMessage("검색 결과가 없습니다!");
           return;
+        }
 
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
@@ -69,16 +73,14 @@ const SearchButton = () => {
                 company,
               });
 
-        if (pageNo === quotient.toString()) {
-          // setIsLoading(false);
-        }
+        if (pageNo === quotient.toString()) setIsLoading(false);
       } else {
         // setIsSearchError(true);
         // setErrorStatus({
         //   errorCode: getData.errorCode,
         //   errorMessage: getData.errorText,
         // });
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("selection error", error);
@@ -104,7 +106,6 @@ const SearchButton = () => {
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-        console.log("target", target);
         dispatch(setRealtime(target));
 
         const quotient =
@@ -122,7 +123,7 @@ const SearchButton = () => {
 
         if (pageNo === quotient.toString())
           if (target.length === 0) {
-            // setIsLoading(false);
+            setIsLoading(false);
             // setMessage("검색 결과가 없습니다!");
           }
       } else {
@@ -131,7 +132,7 @@ const SearchButton = () => {
         //   errorCode: getData.errorCode,
         //   errorMessage: getData.errorText,
         // });
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error", error);
@@ -151,12 +152,12 @@ const SearchButton = () => {
 
     if (pathName === "/settlement") {
       // setMessage("");
-      // setIsLoading(true);
+      setIsLoading(true);
       dispatch(initializeProduct("settlement"));
       settlementPrice(searchDataObject);
     } else {
       // setMessage("");
-      // setIsLoading(true);
+      setIsLoading(true);
       dispatch(initializeProduct("realtime"));
       realTimePrice(searchDataObject);
     }
