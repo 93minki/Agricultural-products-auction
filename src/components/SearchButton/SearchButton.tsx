@@ -12,6 +12,7 @@ import {
   setRealtime,
   setSettlement,
 } from "../../store/modules/products";
+import * as S from "./style";
 
 // TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
 
@@ -34,13 +35,11 @@ const SearchButton = () => {
       company,
     };
     if (pathName === "/settlement") {
-      // setSettlementProductList([]);
       // setMessage("");
       // setIsLoading(true);
       dispatch(initializeProduct("settlement"));
       settlementPrice(searchDataObject);
     } else {
-      // setRealTimeProductList([]);
       // setMessage("");
       // setIsLoading(true);
       dispatch(initializeProduct("realtime"));
@@ -164,9 +163,9 @@ const SearchButton = () => {
   };
 
   return (
-    <Button variant="contained" onClick={searchButtonClick}>
+    <S.SearchButton variant="contained" onClick={searchButtonClick}>
       검색
-    </Button>
+    </S.SearchButton>
   );
 };
 
