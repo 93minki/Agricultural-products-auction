@@ -5,10 +5,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 const SettlementProductList = () => {
-  // const itemList = useSelector((state: RootState) => {
-  //   state.products.settlement;
-  // });
-  // console.log("itemList", itemList);
   const itemList = useSelector(
     (state: RootState) => state.rootReducer.products.settlement
   );
@@ -19,7 +15,7 @@ const SettlementProductList = () => {
       {itemList.length > 0 ? (
         itemList.map((item) => <SettlementProduct key={item.rn} props={item} />)
       ) : (
-        <div>No Item!</div>
+        <div></div>
       )}
       {/* {isLoading ? (
         <Loading />

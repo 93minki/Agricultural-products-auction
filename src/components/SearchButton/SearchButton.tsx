@@ -13,6 +13,7 @@ import {
   setSettlement,
 } from "../../store/modules/products";
 import * as S from "./style";
+import { addStorageItem } from "../../utils/localStorage";
 
 // TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
 
@@ -34,6 +35,9 @@ const SearchButton = () => {
       product,
       company,
     };
+
+    addStorageItem(product);
+
     if (pathName === "/settlement") {
       // setMessage("");
       // setIsLoading(true);

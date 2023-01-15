@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 
