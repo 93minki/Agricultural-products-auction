@@ -1,37 +1,23 @@
-import { MouseEvent, Dispatch, SetStateAction, useEffect } from "react";
 import { Button } from "@mui/material";
-import { getStorageItem, setStorageItem } from "../../utils/localStorage";
-import {
-  SettlementReceiveAllData,
-  SettlementReceiveDatas,
-  SettlementSearchProps,
-} from "../../Types/SettlementPriceType";
+import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
 import { SearchDataProps } from "../../Types/SearchType";
 import { getSettlementPrice } from "../../api/settlementPrice";
-import {
-  RealTimeReceiveAllData,
-  RealTimeReceiveDatas,
-} from "../../Types/RealTimePriceType";
+import { RealTimeReceiveAllData } from "../../Types/RealTimePriceType";
 import { getRealTimePirce } from "../../api/realTimePrice";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { setSettlement } from "../../store/modules/products";
+import {
+  initializeProduct,
+  setRealtime,
+  setSettlement,
+} from "../../store/modules/products";
 
 // TODO Redux로 부터 검색 정보를 받아와서 검색을 실행함.
 
 const SearchButton = () => {
   const router = useRouter();
   const pathName = router.pathname;
-
-  const getSettlementDatas = (listItem: SettlementReceiveDatas[]) => {
-    // setSettlementProductList((prev) => [...prev, ...listItem]);
-  };
-
-  const getRealTimeDatas = (listItem: RealTimeReceiveDatas[]) => {
-    // setRealTimeProductList((prev) => [...prev, ...listItem]);
-  };
-
   const dispatch = useDispatch();
 
   const searchInfoData = useSelector(
@@ -51,11 +37,13 @@ const SearchButton = () => {
       // setSettlementProductList([]);
       // setMessage("");
       // setIsLoading(true);
+      dispatch(initializeProduct("settlement"));
       settlementPrice(searchDataObject);
     } else {
       // setRealTimeProductList([]);
       // setMessage("");
       // setIsLoading(true);
+      dispatch(initializeProduct("realtime"));
       realTimePrice(searchDataObject);
     }
   };
@@ -137,7 +125,8 @@ const SearchButton = () => {
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
-        getRealTimeDatas(target);
+        console.log("target", target);
+        dispatch(setRealtime(target));
 
         const quotient =
           getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);

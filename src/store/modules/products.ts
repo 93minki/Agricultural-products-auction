@@ -28,8 +28,14 @@ const productsSlice = createSlice({
     ) => {
       state.realtime = [...state.realtime, ...action.payload];
     },
+    initializeProduct: (state: ProductsType, action: PayloadAction<string>) => {
+      action.payload === "settlement"
+        ? (state.settlement = [])
+        : (state.realtime = []);
+    },
   },
 });
 
-export const { setSettlement, setRealtime } = productsSlice.actions;
+export const { setSettlement, setRealtime, initializeProduct } =
+  productsSlice.actions;
 export default productsSlice;
