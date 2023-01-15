@@ -1,19 +1,7 @@
-import RealTimeProductList from "../../src/components/RealTimeProductList/RealTimeProductList";
-import RecentKeyword from "../../src/components/RecentKeyword/RecentKeyword";
-import SearchButton from "../../src/components/SearchButton/SearchButton";
-import SearchInfo from "../../src/components/SearchInfo/SerachInfo";
-import Title from "../../src/components/Title/Title";
+import RealtimePage from "../../src/layout/RealtimePageLayout/RealtimePage";
 
 const RealTimePricePage = () => {
-  return (
-    <div>
-      <Title title="실시간 가격 정보" />
-      <SearchInfo type="realtime" />
-      <SearchButton />
-      <RecentKeyword />
-      <RealTimeProductList />
-    </div>
-  );
+  return <RealtimePage />;
 };
 
 export default RealTimePricePage;
