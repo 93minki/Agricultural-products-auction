@@ -13,13 +13,17 @@ const SettlementProductList = () => {
   // });
   // console.log("itemList", itemList);
   const itemList = useSelector(
-    (state: RootState) => state.rootReducer.products
+    (state: RootState) => state.rootReducer.products.settlement
   );
   console.log("itemList", itemList);
 
   return (
     <S.ListLayout>
-      {}
+      {itemList.length > 0 ? (
+        itemList.map((item) => <SettlementProduct key={item.rn} props={item} />)
+      ) : (
+        <div>No Item!</div>
+      )}
       {/* {isLoading ? (
         <Loading />
       ) : products.length > 0 ? (

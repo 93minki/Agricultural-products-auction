@@ -32,37 +32,32 @@ const SearchButton = () => {
     // setRealTimeProductList((prev) => [...prev, ...listItem]);
   };
 
-  // const searchInfoData = useSelector((state: RootState) => state.searchInfo);
-  // console.log("searchInfoData", searchInfoData);
-  // const { date, market, company, product } = searchInfoData;
-
   const dispatch = useDispatch();
 
   const searchInfoData = useSelector(
     (state: RootState) => state.rootReducer.searchInfo
   );
-  // const { date, market, company, product } = searchInfoData;
-  console.log("searchInfoData", searchInfoData);
+  const { date, market, company, product } = searchInfoData;
 
   const searchButtonClick = () => {
-    // const searchDataObject = {
-    //   pageNo: "1",
-    //   date,
-    //   market,
-    //   product,
-    //   company,
-    // };
-    // if (pathName === "/settlement") {
-    //   // setSettlementProductList([]);
-    //   // setMessage("");
-    //   // setIsLoading(true);
-    //   settlementPrice(searchDataObject);
-    // } else {
-    //   // setRealTimeProductList([]);
-    //   // setMessage("");
-    //   // setIsLoading(true);
-    //   realTimePrice(searchDataObject);
-    // }
+    const searchDataObject = {
+      pageNo: "1",
+      date,
+      market,
+      product,
+      company,
+    };
+    if (pathName === "/settlement") {
+      // setSettlementProductList([]);
+      // setMessage("");
+      // setIsLoading(true);
+      settlementPrice(searchDataObject);
+    } else {
+      // setRealTimeProductList([]);
+      // setMessage("");
+      // setIsLoading(true);
+      realTimePrice(searchDataObject);
+    }
   };
 
   const settlementPrice = async ({
@@ -91,7 +86,6 @@ const SearchButton = () => {
           data.smallName.includes(product)
         );
 
-        console.log("target", target);
         dispatch(setSettlement(target));
         const quotient = Math.ceil(getData.totCnt / 1000);
         if (pageNo === "1") {

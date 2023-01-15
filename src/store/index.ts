@@ -15,9 +15,11 @@ const makeStore = () => {
 const store = makeStore();
 
 export default store;
-export interface RootState {
-  rootReducer: {
-    searchInfo: typeof searchInfo;
-    products: typeof products;
-  };
-}
+// export interface RootState {
+//   rootReducer: {
+//     searchInfo: typeof searchInfo;
+//     products: typeof products;
+//   };
+// }
+
+export type RootState = ReturnType<typeof store.getState>;

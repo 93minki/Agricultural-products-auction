@@ -20,13 +20,13 @@ const productsSlice = createSlice({
       state: ProductsType,
       action: PayloadAction<SettlementReceiveDatas[]>
     ) => {
-      state.settlement = action.payload;
+      state.settlement = [...state.settlement, ...action.payload];
     },
     setRealtime: (
       state: ProductsType,
       action: PayloadAction<RealTimeReceiveDatas[]>
     ) => {
-      state.realtime = action.payload;
+      state.realtime = [...state.realtime, ...action.payload];
     },
   },
 });
