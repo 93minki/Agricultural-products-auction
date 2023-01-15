@@ -1,19 +1,19 @@
-import RealTimeProductList from "../../src/components/RealTimeProductList/RealTimeProductList";
 import RecentKeyword from "../../src/components/RecentKeyword/RecentKeyword";
 import SearchButton from "../../src/components/SearchButton/SearchButton";
 import SearchInfo from "../../src/components/SearchInfo/SerachInfo";
+import SettlementProductList from "../../src/components/SettlementProductList/SettlementProductList";
 import Title from "../../src/components/Title/Title";
 
-const RealTimePricePage = () => {
+const SettlementPricePage = () => {
   return (
     <div>
-      <Title title="실시간 가격 정보" />
-      <SearchInfo type="realtime" />
+      <Title title="정산 가격 정보" />
+      <SearchInfo type="settlement" />
       <SearchButton />
       <RecentKeyword />
-      <RealTimeProductList />
+      <SettlementProductList />
     </div>
   );
 };
 
-export default RealTimePricePage;
+export default SettlementPricePage;

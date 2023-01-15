@@ -1,22 +1,18 @@
 import { nanoid } from "nanoid";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { useEffect, useState } from "react";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 
-interface RecentKeywordProps {
-  recentKeyword: string[];
-  setSearchWord: Dispatch<SetStateAction<string>>;
-  setRecentKeyword: Dispatch<SetStateAction<string[]>>;
-}
+const RecentKeyword = () => {
+  const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
-const RecentKeyword = ({
-  recentKeyword,
-  setSearchWord,
-  setRecentKeyword,
-}: RecentKeywordProps) => {
+  useEffect(() => {
+    setRecentKeywords(getStorageItem());
+  }, []);
+
   const handleKeywordClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
-    setSearchWord(target.name);
+    // setSearchWord(target.name);
   };
 
   const handleDeleteButton = (
@@ -24,15 +20,14 @@ const RecentKeyword = ({
     e: React.MouseEvent<HTMLDivElement>
   ) => {
     const keywordList = getStorageItem().filter((item) => item !== word);
-    console.log("after delete", keywordList);
-    setRecentKeyword(keywordList);
+    setRecentKeywords(keywordList);
     setStorageItem(keywordList);
   };
 
   return (
     <S.RecentKeyword>
-      {recentKeyword &&
-        recentKeyword.map((word) => (
+      {recentKeywords &&
+        recentKeywords.map((word) => (
           <S.KeyWordList key={nanoid()}>
             <S.KeyWordItems
               variant="outlined"

@@ -1,5 +1,5 @@
-import * as S from "./style";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import * as S from "./style";
 
 interface ScrollToTopProps {
   handleToTopButtonClick: () => void;

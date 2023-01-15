@@ -1,25 +1,23 @@
-// TODO: 규격, 가격, 거래량, 경매 시간, 산지, 등급명, 총물량, 총 금액, 최저가, 최고가, 평균가
-
+import { useSelector } from "react-redux";
 import * as S from "./style";
-import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import SettlementProduct from "../SettlementProducts/SettlementProduct";
 import Loading from "../Loading/Loading";
-interface ProductListProps {
-  products: SettlementReceiveDatas[];
-  isLoading: boolean;
-  message: string;
-}
+import { RootState } from "../../store";
 
-const SettlementProductList = ({
-  products,
-  isLoading,
-  message,
-}: ProductListProps) => {
-  console.log("productList", products);
+const SettlementProductList = () => {
+  const itemList = useSelector(
+    (state: RootState) => state.rootReducer.products.settlement
+  );
+  console.log("itemList", itemList);
 
   return (
     <S.ListLayout>
-      {isLoading ? (
+      {itemList.length > 0 ? (
+        itemList.map((item) => <SettlementProduct key={item.rn} props={item} />)
+      ) : (
+        <div />
+      )}
+      {/* {isLoading ? (
         <Loading />
       ) : products.length > 0 ? (
         products.map((product) => (
@@ -27,7 +25,7 @@ const SettlementProductList = ({
         ))
       ) : (
         <S.NoSearchResult>{message}</S.NoSearchResult>
-      )}
+      )} */}
     </S.ListLayout>
   );
 };

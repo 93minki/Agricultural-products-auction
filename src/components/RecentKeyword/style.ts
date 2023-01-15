@@ -5,6 +5,7 @@ export const RecentKeyword = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin: 0.5rem 1rem;
 `;
 
 export const KeyWordList = styled.li`

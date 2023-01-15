@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios from "axios";
 import { RealTimePriceRequest } from "../Types/RealTimePriceType";
 
