@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import { RealTimeReceiveDatas } from "../../Types/RealTimePriceType";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ProductsType {
   settlement: SettlementReceiveDatas[];

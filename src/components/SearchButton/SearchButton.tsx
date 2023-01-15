@@ -1,11 +1,14 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-shadow */
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import { SettlementReceiveAllData } from "../../Types/SettlementPriceType";
 import { SearchDataProps } from "../../Types/SearchType";
 import { getSettlementPrice } from "../../api/settlementPrice";
 import { RealTimeReceiveAllData } from "../../Types/RealTimePriceType";
 import { getRealTimePirce } from "../../api/realTimePrice";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
   initializeProduct,
@@ -27,30 +30,6 @@ const SearchButton = () => {
   );
   const { date, market, company, product } = searchInfoData;
 
-  const searchButtonClick = () => {
-    const searchDataObject = {
-      pageNo: "1",
-      date,
-      market,
-      product,
-      company,
-    };
-
-    addStorageItem(product);
-
-    if (pathName === "/settlement") {
-      // setMessage("");
-      // setIsLoading(true);
-      dispatch(initializeProduct("settlement"));
-      settlementPrice(searchDataObject);
-    } else {
-      // setMessage("");
-      // setIsLoading(true);
-      dispatch(initializeProduct("realtime"));
-      realTimePrice(searchDataObject);
-    }
-  };
-
   const settlementPrice = async ({
     pageNo,
     date,
@@ -68,20 +47,20 @@ const SearchButton = () => {
 
       if (getData.hasOwnProperty("data")) {
         // setIsSearchError(false);
-        if (getData.data.length === 0) {
+        if (getData.data.length === 0)
           // setIsLoading(false);
           // setMessage("검색 결과가 없습니다!");
           return;
-        }
+
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
 
         dispatch(setSettlement(target));
         const quotient = Math.ceil(getData.totCnt / 1000);
-        if (pageNo === "1") {
-          if (quotient > 1) {
-            for (let i = 2; i <= quotient; i++) {
+        if (pageNo === "1")
+          if (quotient > 1)
+            for (let i = 2; i <= quotient; i += 1)
               await settlementPrice({
                 pageNo: `${i}`,
                 date,
@@ -89,9 +68,6 @@ const SearchButton = () => {
                 product,
                 company,
               });
-            }
-          }
-        }
 
         if (pageNo === quotient.toString()) {
           // setIsLoading(false);
@@ -133,9 +109,9 @@ const SearchButton = () => {
 
         const quotient =
           getData.data.length === 0 ? 1 : Math.ceil(getData.totCnt / 1000);
-        if (pageNo === "1") {
-          if (quotient > 1) {
-            for (let i = 2; i <= quotient; i++) {
+        if (pageNo === "1")
+          if (quotient > 1)
+            for (let i = 2; i <= quotient; i += 1)
               await realTimePrice({
                 pageNo: `${i}`,
                 date,
@@ -143,16 +119,12 @@ const SearchButton = () => {
                 product,
                 company,
               });
-            }
-          }
-        }
 
-        if (pageNo === quotient.toString()) {
-          // setIsLoading(false);
+        if (pageNo === quotient.toString())
           if (target.length === 0) {
+            // setIsLoading(false);
             // setMessage("검색 결과가 없습니다!");
           }
-        }
       } else {
         // setIsSearchError(true);
         // setErrorStatus({
@@ -163,6 +135,30 @@ const SearchButton = () => {
       }
     } catch (error) {
       console.log("error", error);
+    }
+  };
+
+  const searchButtonClick = () => {
+    const searchDataObject = {
+      pageNo: "1",
+      date,
+      market,
+      product,
+      company,
+    };
+
+    addStorageItem(product);
+
+    if (pathName === "/settlement") {
+      // setMessage("");
+      // setIsLoading(true);
+      dispatch(initializeProduct("settlement"));
+      settlementPrice(searchDataObject);
+    } else {
+      // setMessage("");
+      // setIsLoading(true);
+      dispatch(initializeProduct("realtime"));
+      realTimePrice(searchDataObject);
     }
   };
 

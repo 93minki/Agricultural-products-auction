@@ -13,7 +13,7 @@ const RealTimeProductList = () => {
       {itemList.length > 0 ? (
         itemList.map((item) => <RealTimeProducts key={item.rn} props={item} />)
       ) : (
-        <div></div>
+        <div> </div>
       )}
       {/*    {isLoading ? (
          <Loading />

@@ -1,7 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
 import type { ChangeEvent } from "react";
-import { wholeMarketList } from "../../utils/wholemarketList";
-import { getStorageItem } from "../../utils/localStorage";
 import {
   FormControl,
   InputLabel,
@@ -10,8 +8,10 @@ import {
   TextField,
   SelectChangeEvent,
 } from "@mui/material";
-import * as S from "./style";
 import { useDispatch } from "react-redux";
+import { wholeMarketList } from "../../utils/wholemarketList";
+import { getStorageItem } from "../../utils/localStorage";
+import * as S from "./style";
 import {
   selectCompany,
   selectDate,
@@ -30,7 +30,7 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
     const month = (today.getMonth() + 1).toString();
     const date = today.getDate().toString();
 
-    return year + "-" + month.padStart(2, "0") + "-" + date.padStart(2, "0");
+    return `${year}-${month.padStart(2, "0")}-${date.padStart(2, "0")}`;
   }, []);
 
   const [searchDate, setSearchDate] = useState(getCurrentDate);

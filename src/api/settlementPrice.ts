@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import axios, { AxiosError } from "axios";
 import { SettlementPirceRequest } from "../Types/SettlementPriceType";
 

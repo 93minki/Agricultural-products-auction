@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Provider } from "react-redux";
 import store from "../src/store";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Provider store={store}>
@@ -15,6 +15,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Provider>
     </>
   );
-}
+};
 
 export default MyApp;

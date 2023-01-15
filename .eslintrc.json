@@ -41,7 +41,9 @@
     "curly": ["error", "multi"],
     "import/no-extraneous-dependencies": "off",
     "react/react-in-jsx-scope": "off",
-    "react/jsx-no-useless-fragment": "off"
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-props-no-spreading": ["warn"],
+    "react/prop-types": "off"
   },
   "settings": {
     "import/resolver": {
@@ -57,7 +59,7 @@
         "*.stories.tsx"
       ],
       "rules": {
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": ["warn"]
       }
     }
   ]

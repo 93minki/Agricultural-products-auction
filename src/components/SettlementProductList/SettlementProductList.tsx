@@ -1,7 +1,7 @@
+import { useSelector } from "react-redux";
 import * as S from "./style";
 import SettlementProduct from "../SettlementProducts/SettlementProduct";
 import Loading from "../Loading/Loading";
-import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 const SettlementProductList = () => {
@@ -15,7 +15,7 @@ const SettlementProductList = () => {
       {itemList.length > 0 ? (
         itemList.map((item) => <SettlementProduct key={item.rn} props={item} />)
       ) : (
-        <div></div>
+        <div />
       )}
       {/* {isLoading ? (
         <Loading />

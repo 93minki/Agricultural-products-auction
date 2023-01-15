@@ -1,19 +1,17 @@
 import { Breadcrumbs } from "@mui/material";
 import { SettlementReceiveDatas } from "../../Types/SettlementPriceType";
 import * as S from "./style";
+
 interface ProductProps {
   props: SettlementReceiveDatas;
 }
 
 const SettlementProduct = ({ props }: ProductProps) => {
   const changeDate = (date: string) => {
-    return (
-      date.substring(0, 4) +
-      "-" +
-      date.substring(4, 6) +
-      "-" +
-      date.substring(6, 8)
-    );
+    return `${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(
+      6,
+      8
+    )}`;
   };
   return (
     <S.ProductLayout>
