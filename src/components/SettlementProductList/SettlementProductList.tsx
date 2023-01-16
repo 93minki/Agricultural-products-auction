@@ -1,31 +1,26 @@
 import { useSelector } from "react-redux";
 import * as S from "./style";
 import SettlementProduct from "../SettlementProducts/SettlementProduct";
-import Loading from "../Loading/Loading";
 import { RootState } from "../../store";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 
 const SettlementProductList = () => {
   const itemList = useSelector(
     (state: RootState) => state.rootReducer.products.settlement
   );
-  console.log("itemList", itemList);
 
   return (
     <S.ListLayout>
       {itemList.length > 0 ? (
-        itemList.map((item) => <SettlementProduct key={item.rn} props={item} />)
+        <>
+          {itemList.map((item) => (
+            <SettlementProduct key={item.rn} props={item} />
+          ))}
+          <ScrollToTop />
+        </>
       ) : (
         <div />
       )}
-      {/* {isLoading ? (
-        <Loading />
-      ) : products.length > 0 ? (
-        products.map((product) => (
-          <SettlementProduct key={product.rn} props={product} />
-        ))
-      ) : (
-        <S.NoSearchResult>{message}</S.NoSearchResult>
-      )} */}
     </S.ListLayout>
   );
 };

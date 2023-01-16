@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import Loading from "../Loading/Loading";
 import RealTimeProducts from "../RealTimeProducts/RealTimeProduct";
+import ScrollToTop from "../ScrollToTop/ScrollToTop";
 import * as S from "./style";
 
 const RealTimeProductList = () => {
@@ -11,19 +11,15 @@ const RealTimeProductList = () => {
   return (
     <S.ListLayout>
       {itemList.length > 0 ? (
-        itemList.map((item) => <RealTimeProducts key={item.rn} props={item} />)
+        <>
+          {itemList.map((item) => (
+            <RealTimeProducts key={item.rn} props={item} />
+          ))}
+          <ScrollToTop />
+        </>
       ) : (
         <div> </div>
       )}
-      {/*    {isLoading ? (
-         <Loading />
-       ) : products.length > 0 ? (
-         products.map((product) => (
-           <RealTimeProducts key={product.rn} props={product} />
-         ))
-      ) : (
-        <S.NoSearchResult>{message}</S.NoSearchResult>
-      )} */}
     </S.ListLayout>
   );
 };

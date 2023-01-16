@@ -21,9 +21,17 @@ import { addStorageItem } from "../../utils/localStorage";
 
 interface SearchButtonProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsSearchError: Dispatch<SetStateAction<boolean>>;
+  setErrorStatus: Dispatch<
+    SetStateAction<{ errorCode: string; errorMessage: string }>
+  >;
 }
 
-const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
+const SearchButton = ({
+  setIsLoading,
+  setIsSearchError,
+  setErrorStatus,
+}: SearchButtonProps) => {
   const router = useRouter();
   const pathName = router.pathname;
   const dispatch = useDispatch();
@@ -49,7 +57,7 @@ const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
       });
 
       if (getData.hasOwnProperty("data")) {
-        // setIsSearchError(false);
+        setIsSearchError(false);
         if (getData.data.length === 0) {
           setIsLoading(false);
           // setMessage("검색 결과가 없습니다!");
@@ -75,11 +83,11 @@ const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
 
         if (pageNo === quotient.toString()) setIsLoading(false);
       } else {
-        // setIsSearchError(true);
-        // setErrorStatus({
-        //   errorCode: getData.errorCode,
-        //   errorMessage: getData.errorText,
-        // });
+        setIsSearchError(true);
+        setErrorStatus({
+          errorCode: getData.errorCode,
+          errorMessage: getData.errorText,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -102,7 +110,7 @@ const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
       });
 
       if (getData.hasOwnProperty("data")) {
-        // setIsSearchError(false);
+        setIsSearchError(false);
         const target = getData.data.filter((data) =>
           data.smallName.includes(product)
         );
@@ -127,11 +135,11 @@ const SearchButton = ({ setIsLoading }: SearchButtonProps) => {
             // setMessage("검색 결과가 없습니다!");
           }
       } else {
-        // setIsSearchError(true);
-        // setErrorStatus({
-        //   errorCode: getData.errorCode,
-        //   errorMessage: getData.errorText,
-        // });
+        setIsSearchError(true);
+        setErrorStatus({
+          errorCode: getData.errorCode,
+          errorMessage: getData.errorText,
+        });
         setIsLoading(false);
       }
     } catch (error) {

@@ -1,14 +1,19 @@
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import * as S from "./style";
 
-interface ScrollToTopProps {
-  handleToTopButtonClick: () => void;
-}
+const ScrollToTop = () => {
+  const handleClickButton = () => {
+    if (!window.scrollY) return;
 
-const ScrollToTop = ({ handleToTopButtonClick }: ScrollToTopProps) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <S.ToTopButtonLayout>
-      <S.ToTopButton variant="contained" onClick={handleToTopButtonClick}>
+      <S.ToTopButton variant="contained" onClick={handleClickButton}>
         <ArrowCircleUpIcon />
         위로가기
       </S.ToTopButton>
