@@ -72,6 +72,12 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
     dispatch(selectDate(date.replaceAll("-", "")));
   };
 
+  const recentKeywordClick = (keyword: string) => {
+    setSearchWord(keyword);
+    dispatch(selectProduct(keyword));
+  };
+
+
   return (
     <S.SearchInfoLayout>
       {type === "settlement" ? (
@@ -123,7 +129,7 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
         {searchWord}
       </TextField>
 
-      <RecentKeyword setSearchWord={setSearchWord} />
+      <RecentKeyword recentKeywordClick={recentKeywordClick} />
     </S.SearchInfoLayout>
   );
 };
