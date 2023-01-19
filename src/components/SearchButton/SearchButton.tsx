@@ -172,9 +172,11 @@ const SearchButton = ({
   };
 
   return (
-    <S.SearchButton variant="contained" onClick={searchButtonClick}>
-      검색
-    </S.SearchButton>
+    <>
+      <S.SearchButton variant="contained" onClick={searchButtonClick}>
+        검색
+      </S.SearchButton>
+    </>
   );
 };
 

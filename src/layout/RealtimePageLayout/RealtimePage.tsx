@@ -24,7 +24,6 @@ const RealtimePage = () => {
         setIsSearchError={setIsSearchError}
         setErrorStatus={setErrorStatus}
       />
-      <RecentKeyword />
       {isLoading ? <Loading /> : <RealTimeProductList />}
       {isSearchError ? (
         <ErrorState
