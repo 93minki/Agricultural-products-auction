@@ -2,7 +2,6 @@ import { useState } from "react";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import Loading from "../../components/Loading/Loading";
 import RealTimeProductList from "../../components/RealTimeProductList/RealTimeProductList";
-import RecentKeyword from "../../components/RecentKeyword/RecentKeyword";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import SearchInfo from "../../components/SearchInfo/SerachInfo";
 import Title from "../../components/Title/Title";

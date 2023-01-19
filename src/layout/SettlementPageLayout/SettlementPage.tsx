@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import Loading from "../../components/Loading/Loading";
-
 import SearchButton from "../../components/SearchButton/SearchButton";
 import SearchInfo from "../../components/SearchInfo/SerachInfo";
 import SettlementProductList from "../../components/SettlementProductList/SettlementProductList";

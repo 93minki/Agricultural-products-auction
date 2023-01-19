@@ -8,13 +8,13 @@ export const setStorageItem = (keyword: string[]) => {
 };
 
 export const addStorageItem = (keyword: string) => {
-  console.log("add Storage");
   const keywordList = localStorage.getItem("keyword");
   if (keywordList) {
     const parsing = JSON.parse(keywordList) as string[];
-    if (!parsing.includes(keyword)) {
-      console.log("노 중복 추가해야함", keyword);
+    if (parsing.length === 5) {
+      const tempWord = parsing.slice(1, 5);
+      setStorageItem([...tempWord, keyword]);
+    } else if (!parsing.includes(keyword))
       setStorageItem([...parsing, keyword]);
-    }
   }
 };

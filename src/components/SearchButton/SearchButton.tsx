@@ -155,7 +155,8 @@ const SearchButton = ({
       product,
       company,
     };
-
+    setIsSearchError(false);
+    setErrorStatus({ errorCode: "", errorMessage: "" });
     addStorageItem(product);
 
     if (pathName === "/settlement") {
