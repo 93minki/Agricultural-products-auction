@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { wholeMarketList } from "../../utils/wholemarketList";
-import { getStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 import {
   selectCompany,
@@ -18,6 +17,7 @@ import {
   selectMarket,
   selectProduct,
 } from "../../store/modules/searchInfo";
+import RecentKeyword from "../RecentKeyword/RecentKeyword";
 
 interface SearchInfoProps {
   type: string;
@@ -72,6 +72,12 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
     dispatch(selectDate(date.replaceAll("-", "")));
   };
 
+  const recentKeywordClick = (keyword: string) => {
+    setSearchWord(keyword);
+    dispatch(selectProduct(keyword));
+  };
+
+
   return (
     <S.SearchInfoLayout>
       {type === "settlement" ? (
@@ -123,15 +129,7 @@ const SearchInfo = ({ type }: SearchInfoProps) => {
         {searchWord}
       </TextField>
 
-      {/* <Button variant="contained" onClick={handleSearchButtonClick}>
-        검색
-      </Button> */}
-      {/* <SearchButton
-        type={type}
-        searchInfo={{ searchDate, currentMarket, currentCompany, searchWord }}
-        setRecentKeywords={setRecentKeywords}
-        setItemList={setItemList}
-      /> */}
+      <RecentKeyword recentKeywordClick={recentKeywordClick} />
     </S.SearchInfoLayout>
   );
 };

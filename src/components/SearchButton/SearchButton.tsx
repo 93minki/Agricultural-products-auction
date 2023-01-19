@@ -155,7 +155,8 @@ const SearchButton = ({
       product,
       company,
     };
-
+    setIsSearchError(false);
+    setErrorStatus({ errorCode: "", errorMessage: "" });
     addStorageItem(product);
 
     if (pathName === "/settlement") {
@@ -172,9 +173,11 @@ const SearchButton = ({
   };
 
   return (
-    <S.SearchButton variant="contained" onClick={searchButtonClick}>
-      검색
-    </S.SearchButton>
+    <>
+      <S.SearchButton variant="contained" onClick={searchButtonClick}>
+        검색
+      </S.SearchButton>
+    </>
   );
 };
 

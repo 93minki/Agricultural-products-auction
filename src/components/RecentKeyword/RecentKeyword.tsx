@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { getStorageItem, setStorageItem } from "../../utils/localStorage";
 import * as S from "./style";
 
-const RecentKeyword = () => {
+interface RecentKeywordProps {
+  recentKeywordClick: (target: string) => void;
+}
+
+const RecentKeyword = ({ recentKeywordClick }: RecentKeywordProps) => {
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -11,8 +15,8 @@ const RecentKeyword = () => {
   }, []);
 
   const handleKeywordClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLButtonElement;
-    // setSearchWord(target.name);
+    const target = (e.target as HTMLButtonElement).name;
+    recentKeywordClick(target);
   };
 
   const handleDeleteButton = (
